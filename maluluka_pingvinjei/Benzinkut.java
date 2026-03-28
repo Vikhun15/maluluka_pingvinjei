@@ -15,15 +15,12 @@ public class Benzinkut extends Bolt {
     @Override
     public void elad(ITargy termek, Hokotro gep) {
         
-        // Az "instanceof" operátorral megnézzük, milyen típusú a termék
         if (termek instanceof Salt || termek instanceof Fuel) {
             
-            // Ha só vagy kerozin, akkor rábízzuk az ősosztályra (Bolt) az eladást
             super.elad(termek, gep);
             
         } else {
-            // Ha bármi más (pl. SoproFej, SarkanyFej), akkor elzavarjuk a vevőt
-            System.out.println("Benzinkut: Hiba! Itt csak sot es biokerozint arulunk, kotrofejeket nem!");
+            //hiba
         }
     }
 }

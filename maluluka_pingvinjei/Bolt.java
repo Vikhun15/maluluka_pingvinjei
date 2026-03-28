@@ -23,7 +23,7 @@ public class Bolt extends Epulet {
             System.out.println("Bolt: Sikeres vasarlas! Leveve " + ar + " PingCoin.");
             System.out.println("Bolt: Uj egyenleg: " + gep.getPenz());
             
-            // Itt a szkeletonban elvileg átadjuk a tárgyat a gépnek
+            // Itt a átkéne adni a terméket
             
         } else {
             System.out.println("Bolt: Sikertelen vasarlas! Nincs eleg penzed.");

@@ -32,7 +32,7 @@ public class Auto extends Jarmu {
 
         if (this.kimaradoKorok > 0) return;
 
-        // 5. MUNKA: Koptatja az utat
+        // HALAD
         hova.jarmuAthalad(); 
     }
 }
