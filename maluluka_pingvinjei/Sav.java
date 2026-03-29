@@ -26,6 +26,9 @@ public class Sav {
      * Havazáskor növeli a hórétegek számát.
      */
     public void hoEsik() {
+        if(hoRetegek >=7){
+            jarhato = false;
+        }
         hoRetegek++;
     }
 
