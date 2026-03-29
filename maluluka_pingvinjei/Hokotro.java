@@ -101,4 +101,5 @@ public class Hokotro extends Jarmu {
     public Fuel getFuel() { return fuel; }
     public int getPenz() { return penz; }
     public void penzKeres(int osszeg) { this.penz += osszeg; }
+    public Kotrofej getAktualisFej() { return aktualisFej; }
 }

@@ -12,7 +12,7 @@ public class Salt implements ITargy {
 
     Salt(int ar){
         this.ar=ar;
-        mennyiseg=0;
+        mennyiseg=10;
     }
 
     @Override
@@ -26,6 +26,12 @@ public class Salt implements ITargy {
      */
     public int getMennyiseg() {
         return this.mennyiseg;
+    }
+
+    @Override
+    public void applyTo(Hokotro gep) {
+        gep.getSalt().novel(10);
+        System.out.println("-> Só készlet feltöltve! Jelenlegi mennyiség: " + gep.getSalt().getMennyiseg() + " egység.");
     }
 
     public void setMennyiseg(int ujMennyiseg){

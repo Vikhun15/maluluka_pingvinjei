@@ -10,7 +10,7 @@ public class Fuel implements ITargy {
 
     Fuel(int ar) {
         this.ar = ar;
-        this.literek = 0; 
+        this.literek = 20; 
     }
 
     @Override
@@ -24,6 +24,12 @@ public class Fuel implements ITargy {
      */
     public void fogyaszt(int menny) {
         this.literek -= menny;
+    }
+
+    @Override
+    public void applyTo(Hokotro gep) {
+        gep.getFuel().tankol(20);
+        System.out.println("-> Üzemanyag feltankolva! Jelenlegi mennyiség: " + gep.getFuel().getLiterek() + " liter.");
     }
 
     /**

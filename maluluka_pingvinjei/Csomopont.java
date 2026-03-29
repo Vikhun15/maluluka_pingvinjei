@@ -21,7 +21,8 @@ public abstract class Csomopont {
     public void jarmuBefogad(Jarmu jarmu) {
         if (this.aktualisJarmu != null) {
             this.aktualisJarmu.karambolozik(); 
-            jarmu.karambolozik();             
+            jarmu.karambolozik();
+            System.out.println("KARAMBOL! Járművek ütköztek a csomópontban. Mindkét jármű 3 körig kimarad.");            
         } else {
             this.aktualisJarmu = jarmu;
         }
