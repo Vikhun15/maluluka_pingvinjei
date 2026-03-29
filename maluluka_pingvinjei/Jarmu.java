@@ -28,6 +28,12 @@ public abstract class Jarmu {
         this.kimaradoKorok = 0;
     }
 
+    public Jarmu() {
+        this.id = nextId++;
+        this.kimaradoKorok = 0;
+    }
+
+
     /**
      * Absztrakt metódus a jármű helyváltoztatására.
      * @param hova A cél sáv, ahová a jármű mozog.

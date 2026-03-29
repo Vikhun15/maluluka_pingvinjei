@@ -7,4 +7,6 @@ public interface ITargy {
      * @return A tárgy ára.
      */
     int getAr();
+
+    public void applyTo(Hokotro gep);
 }

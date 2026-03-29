@@ -30,7 +30,14 @@ public class Hokotro extends Jarmu {
         this.fuel = new Fuel(20);
         this.birtokoltFejek = new ArrayList<>();
     }
-
+    public Hokotro() {
+        super();
+        this.penz = 0;
+        this.salt = new Salt(10);
+        this.fuel = new Fuel(20);
+        this.birtokoltFejek = new ArrayList<>();
+    }
+  
     /**
      * Az aktív kotrófejen meghívja a hatasKifejtese metódust a megadott sávon.
      * @param sav A tisztítandó sáv.

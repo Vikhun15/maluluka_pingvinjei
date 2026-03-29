@@ -19,6 +19,11 @@ public class Busz extends Jarmu {
         this.vegAllomas = veg;
     }
 
+    public Busz() {
+        super();
+        this.megfordulasokSzama = 0;
+    }
+
     @Override
     public void mozog(Sav hova) {
         if (this.kimaradoKorok > 0) return;
