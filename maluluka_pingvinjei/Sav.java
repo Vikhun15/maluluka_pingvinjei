@@ -67,4 +67,10 @@ public class Sav {
 
     //* Állapot beállítása */
     public void setSozva(boolean s) { this.sozva = s; }
+    public void setJarhato(boolean jarhato){
+        this.jarhato = jarhato;
+    }
+    public boolean getJarhato(){
+        return jarhato;
+    }
 }
