@@ -1,3 +1,6 @@
+import java.util.List;
+import java.util.ArrayList;
+
 /**
  * A takarító által vezetett jármű, amely kotrófejekkel takarítja az utat.
  * Magában foglalja a pénzkészletet, a sót és az üzemanyagot.
@@ -11,6 +14,8 @@ public class Hokotro extends Jarmu {
     
     /** A hókotró sókészlete. */
     private Salt salt;
+
+    private List<Kotrofej> birtokoltFejek;
     
     /** A hókotró üzemanyagkészlete. */
     private Fuel fuel;
@@ -23,6 +28,7 @@ public class Hokotro extends Jarmu {
         this.penz = 0;
         this.salt = new Salt(10);
         this.fuel = new Fuel(20);
+        this.birtokoltFejek = new ArrayList<>();
     }
 
     /**
@@ -33,6 +39,23 @@ public class Hokotro extends Jarmu {
         if (aktualisFej != null) {
             aktualisFej.hatasKifejtese(sav, this);
         }
+    }
+
+    /**
+     * Ezt hívja meg az új fej, amikor megvásárolják a boltban.
+     * Beteszi a listába, és (opcionálisan) rögtön fel is szereli.
+     */
+    public void ujFejetBegyujt(Kotrofej ujFej) {
+        this.birtokoltFejek.add(ujFej);
+        this.aktualisFej = ujFej; 
+        System.out.println("-> Uj fej a raktarban. Jelenlegi fejek szama: " + birtokoltFejek.size());
+    }
+
+    /**
+     * Visszaadja a birtokolt fejek listáját (pl. a UI vagy a tesztelő számára).
+     */
+    public List<Kotrofej> getBirtokoltFejek() {
+        return this.birtokoltFejek;
     }
 
     /**

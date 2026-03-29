@@ -30,6 +30,11 @@ public abstract class Kotrofej implements ITargy {
         this.ar = ar;
     }  
 
+    @Override
+    public void applyTo(Hokotro gep) {
+        gep.ujFejetBegyujt(this);
+    }
+
     /**
      * Egy implementálandó metódust biztosít a belőle leszármaztatott osztályoknak,
      * amelyek így a saját, egyedi, képességeik szerint képesek kifejteni a hatásukat 
