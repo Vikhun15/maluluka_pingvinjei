@@ -23,6 +23,6 @@ public class SoproFej extends Kotrofej {
         //? tényleg szomszédos és ha igen melyikre????
         Sav szomszedos = new Sav(); 
         sav.havatTol(szomszedos);
-        sav.olvaszt(); //ez elég overkill de működik
+        sav.sopor(); //ez elég overkill de működik
     }
 }
