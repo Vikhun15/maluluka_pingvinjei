@@ -38,6 +38,7 @@ public class Sav {
             hoRetegKovon++;
         }
         if(hoRetegKovon >= 3){
+            hoRetegKovon = 0;
             kovezve = false;
         }
     }
