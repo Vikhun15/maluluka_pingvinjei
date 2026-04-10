@@ -97,7 +97,12 @@ public class Sav {
     public boolean getJarhato(){
         return jarhato;
     }
-
+    public boolean getTorottJeg(){
+        return torottJeg;
+    }
+    public void setTorottJeg(boolean torottJeg){
+        this.torottJeg = torottJeg;
+    }
     public int gethoRetegek(){
         return hoRetegek;
     }
