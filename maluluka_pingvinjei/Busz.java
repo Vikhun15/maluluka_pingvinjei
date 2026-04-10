@@ -30,7 +30,7 @@ public class Busz extends Jarmu {
 
         this.setAktualisSav(hova);
 
-        if (hova.jeges()) {
+        if (hova.jeges() && !hova.koves()) {
             this.csuszkal();
             if (this.kimaradoKorok > 0) return;
         }

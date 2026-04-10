@@ -10,6 +10,8 @@ public class Sav {
     private boolean torottJeg = false;
     private boolean jarhato = true;
     private Utszakasz szuloUtszakasz;
+    private int hoRetegKovon = 0;
+    private boolean kovezve = false;
 
     /**
      * Növeli az áthaladt autók számát. Ha eléri a 4-et, a sáv jegessé válik.
@@ -23,13 +25,21 @@ public class Sav {
     }
 
     /**
-     * Havazáskor növeli a hórétegek számát.
+     * Havazáskor növeli a hórétegek számát,
+     * illetve a zúzott kőre esett hórétegek számát is.
+     * Ha az utóbbi eléri a hármat, akkor a kő hatása megszűnik.
      */
     public void hoEsik() {
-        if(hoRetegek >=7){
+        if(hoRetegek >=8){
             jarhato = false;
         }
         hoRetegek++;
+        if(kovezve){
+            hoRetegKovon++;
+        }
+        if(hoRetegKovon >= 3){
+            kovezve = false;
+        }
     }
 
     public void setUtszakasz(Utszakasz ut) {
@@ -51,11 +61,12 @@ public class Sav {
     }
 
     /**
-     * Söpréskor vagy hóhányáskor a hó eltűnik a sávról.
+     * Söpréskor vagy hóhányáskor a hó és a zúzott kő eltűnik a sávról.
      * @param hova A szomszédos sáv, ahova a hó átkerül.
      */
     public void havatTol(Sav hova) {
-        this.hoRetegek = 0; 
+        this.hoRetegek = 0;
+        kovezve = false;
         if (hova != null) hova.hoEsik(); 
     }
 
@@ -80,5 +91,11 @@ public class Sav {
 
     public int gethoRetegek(){
         return hoRetegek;
+    }
+    public boolean koves(){
+        return kovezve;
+    }
+    public void setKo(boolean kovezve){
+        this.kovezve = kovezve;
     }
 }
