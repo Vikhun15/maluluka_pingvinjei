@@ -79,6 +79,14 @@ public class Sav {
         torottJeg = false;
     }
 
+     /**
+     * Felolvasztja a havat és a jeget a sávról.
+     */
+    public void sopor() {
+        hoRetegek = 0; 
+        torottJeg = false;
+    }
+
     //* Állapot beállítása */
     public void setSozva(boolean s) { this.sozva = s; }
     public boolean getSozva() { return sozva; }
