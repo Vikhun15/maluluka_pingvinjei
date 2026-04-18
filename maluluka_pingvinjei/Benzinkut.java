@@ -15,7 +15,7 @@ public class Benzinkut extends Bolt {
     @Override
     public void elad(ITargy termek, Hokotro gep) {
         
-        if (termek instanceof Salt || termek instanceof Fuel) {
+        if (termek instanceof Salt || termek instanceof Fuel || termek instanceof Rock) {
             
             super.elad(termek, gep);
             

@@ -7,7 +7,11 @@ public class Auto extends Jarmu {
     /** A jármű jelenlegi tartózkodási helye */
     protected Sav aktualisSav;
 
-   public Auto(Sav induloSav) {
+    protected Epulet otthon;
+
+    protected Epulet munkahely;
+
+    public Auto(Sav induloSav) {
         super(induloSav);
     }
 
