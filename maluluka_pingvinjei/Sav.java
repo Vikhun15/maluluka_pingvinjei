@@ -42,13 +42,14 @@ public class Sav {
             if(hoRetegek < 0){
                 hoRetegek = 0;
             }
-        }
-        if(sozva && kovezve){
-            hoRetegKovon -= 2;
-            if(hoRetegKovon < 0){
-                hoRetegKovon = 0;
+            if(kovezve){
+                hoRetegKovon -= 2;
+                if(hoRetegKovon < 0){
+                    hoRetegKovon = 0;
+                }
             }
         }
+        
         if(hoRetegKovon >= 3){
             hoRetegKovon = 0;
             kovezve = false;
@@ -82,7 +83,7 @@ public class Sav {
 
         if (hova != null){
             hova.hoEsik();
-            
+
             if(kovezve){
                 hova.setKo(true);
             }
