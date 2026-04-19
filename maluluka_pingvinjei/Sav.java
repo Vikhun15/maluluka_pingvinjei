@@ -79,6 +79,9 @@ public class Sav {
      */
     public void havatTol(Sav hova) {
         this.hoRetegek = 0;
+        if(kovezve && hova != null){
+            hova.setKo(true);
+        }
         kovezve = false;
         if (hova != null) hova.hoEsik(); 
     }
@@ -97,6 +100,7 @@ public class Sav {
      */
     public void sopor() {
         hoRetegek = 0; 
+        kovezve = false;
         torottJeg = false;
     }
 
