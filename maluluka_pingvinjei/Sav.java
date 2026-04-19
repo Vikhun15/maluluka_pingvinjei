@@ -37,6 +37,18 @@ public class Sav {
         if(kovezve){
             hoRetegKovon++;
         }
+        if(sozva){
+            hoRetegek -= 2;
+            if(hoRetegek < 0){
+                hoRetegek = 0;
+            }
+        }
+        if(sozva && kovezve){
+            hoRetegKovon -= 2;
+            if(hoRetegKovon < 0){
+                hoRetegKovon = 0;
+            }
+        }
         if(hoRetegKovon >= 3){
             hoRetegKovon = 0;
             kovezve = false;
