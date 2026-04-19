@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * A Soprofej egy speciális Kotrofej, amely egyedi módon, söpréssel takarítja le, aminek
  * következtében a feltört jég eltűnik, a hó pedig áttolódik másik sávra.
@@ -20,9 +22,14 @@ public class SoproFej extends Kotrofej {
      */
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
-        //? tényleg szomszédos és ha igen melyikre????
-        Sav szomszedos = new Sav(); 
-        sav.havatTol(szomszedos);
-        sav.sopor(); //ez elég overkill de működik
+        
+        //Ezzel áttolja a havat és a zúzott követ a szomszédos sávba
+        List<Sav> savok = sav.getUtszakasz().getSavok();
+        for (Sav s : savok) {
+            if(!s.equals(sav)){
+                sav.havatTol(s);
+            }
+        }
+
     }
 }
