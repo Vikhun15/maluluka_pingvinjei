@@ -37,4 +37,7 @@ public abstract class Csomopont {
             this.aktualisJarmu = null; 
         }
     }
+    public Jarmu getAktualisJarmu(){
+        return aktualisJarmu;
+    }
 }

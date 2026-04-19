@@ -83,7 +83,7 @@ public class Hokotro extends Jarmu {
         this.setAktualisSav(hova); // 2. Rálép a sávra
 
         if (hova.jeges() || hova.getTorottJeg() && !hova.koves()) {
-            this.csuszkal(); // 3. Jég-check 
+            this.csuszkal(hova); // 3. Jég-check 
             if (this.kimaradoKorok > 0) return; 
         }
 

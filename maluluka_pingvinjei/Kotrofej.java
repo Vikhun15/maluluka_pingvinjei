@@ -18,7 +18,7 @@ public abstract class Kotrofej implements ITargy {
     /*
      * A következő id azonosító.
      */
-    static int nextId = 0;
+    protected static int nextId = 0;
 
     /**
      * Létrehozza a Kotrofej objektumot a megadott id és ár alapján.

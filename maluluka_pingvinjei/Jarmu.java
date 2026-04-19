@@ -40,11 +40,17 @@ public abstract class Jarmu {
      */
     public abstract void mozog(Sav hova);
 
-    public void csuszkal() {
+    public void csuszkal(Sav hova) {
         double esely = rng.nextDouble();
 
-        if (esely < 0.30) {
-            //irányíthatatlan
+        //ez potenciálisan lehetne jó ütközés logikának, vagy hasonló
+        if (esely <= 0.30) {
+            Csomopont vegPont = hova.getUtszakasz().getVegPont(); 
+            Jarmu masikJarmu = vegPont.getAktualisJarmu();
+            if(masikJarmu != null){
+                masikJarmu.karambolozik();
+                this.karambolozik();
+            }
         } else {
             //semmi
         }
