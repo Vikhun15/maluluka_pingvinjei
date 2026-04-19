@@ -177,12 +177,12 @@ public class Test {
         Sav s = new Sav();
         h.ujFejetBegyujt(sf);
 
-        System.out.println("Előtte: Hókotró kerozin szintje: " + h.getFuel().getLiterek() + " liter.");
+        System.out.println("Előtte: Hókotró kerozin szintje: " + h.getUzemanyag().getLiterek() + " liter.");
         System.out.println("Hókotró elkezdi felolvasztani a sávot...");
         
         h.takarit(s);
         
-        System.out.println("Utána: Hókotró kerozin szintje: " + h.getFuel().getLiterek() + " liter (5 litert fogyasztott).");
+        System.out.println("Utána: Hókotró kerozin szintje: " + h.getUzemanyag().getLiterek() + " liter (5 litert fogyasztott).");
     }
 
     private static void UseCase_JegtoroFej() {
@@ -207,8 +207,8 @@ public class Test {
         Hokotro ujHokotro = new Hokotro(new Sav());
         System.out.println("Új hókotró sikeresen létrehozva!");
         System.out.println("Alapértelmezett pénze: " + ujHokotro.getPenz());
-        System.out.println("Alapértelmezett só: " + ujHokotro.getSalt().getMennyiseg());
-        System.out.println("Alapértelmezett üzemanyag: " + ujHokotro.getFuel().getLiterek());
+        System.out.println("Alapértelmezett só: " + ujHokotro.getSo().getMennyiseg());
+        System.out.println("Alapértelmezett üzemanyag: " + ujHokotro.getUzemanyag().getLiterek());
     }
 
     private static void UseCase_Fejcsere() {
@@ -237,12 +237,12 @@ public class Test {
         Sav s = new Sav();
         h.ujFejetBegyujt(sf);
         System.out.println("A sáv 'sozva' állapota:"+ s.getSozva());
-        System.out.println("Előtte: Hókotró só készlete: " + h.getSalt().getMennyiseg());
+        System.out.println("Előtte: Hókotró só készlete: " + h.getSo().getMennyiseg());
         System.out.println("Sószóró fejjel a hókotró leszórja az utat...");
         
         h.takarit(s);
         
-        System.out.println("Utána: Hókotró só készlete: " + h.getSalt().getMennyiseg() + " (1 egység elhasználva).");
+        System.out.println("Utána: Hókotró só készlete: " + h.getSo().getMennyiseg() + " (1 egység elhasználva).");
         System.out.println("A sáv 'sozva' attribútuma true-ra állt. (A jég elolvadása a kör frissítésénél történne meg)."+ s.getSozva());
     }
 

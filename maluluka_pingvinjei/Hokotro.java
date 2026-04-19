@@ -13,31 +13,31 @@ public class Hokotro extends Jarmu {
     private Kotrofej aktualisFej;
     
     /** A hókotró sókészlete. */
-    private Salt salt;
+    private So so;
 
     private List<Kotrofej> birtokoltFejek;
     
     /** A hókotró üzemanyagkészlete. */
-    private Fuel fuel;
+    private Uzemanyag uzemanyag;
 
     /** A hókotró zúzott kő készlete. */
-    private Rock rock;
+    private ZuzottKo zuzottKo;
     /**
      * Inicializálja a hókotrót az alapértelmezett erőforrásokkal.
      */
     public Hokotro(Sav indul) {
         super(indul);
         this.penz = 0;
-        this.salt = new Salt(10);
-        this.rock = new Rock(10);
-        this.fuel = new Fuel(20);
+        this.so = new So(10);
+        this.zuzottKo = new ZuzottKo(10);
+        this.uzemanyag = new Uzemanyag(20);
         this.birtokoltFejek = new ArrayList<>();
     }
     public Hokotro() {
         super();
         this.penz = 0;
-        this.salt = new Salt(10);
-        this.fuel = new Fuel(20);
+        this.so = new So(10);
+        this.uzemanyag = new Uzemanyag(20);
         this.birtokoltFejek = new ArrayList<>();
     }
   
@@ -100,9 +100,9 @@ public class Hokotro extends Jarmu {
     }
 
     // Getterek a fejek számára a működéshez
-    public Salt getSalt() { return salt; }
-    public Fuel getFuel() { return fuel; }
-    public Rock getRock() { return rock; }
+    public So getSo() { return so; }
+    public Uzemanyag getUzemanyag() { return uzemanyag; }
+    public ZuzottKo getZuzottKo() { return zuzottKo; }
     public int getPenz() { return penz; }
     public void penzKeres(int osszeg) { this.penz += osszeg; }
     public Kotrofej getAktualisFej() { return aktualisFej; }

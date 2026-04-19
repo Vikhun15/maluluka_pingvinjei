@@ -51,8 +51,6 @@ public abstract class Jarmu {
                 masikJarmu.karambolozik();
                 this.karambolozik();
             }
-        } else {
-            //semmi
         }
     }
 

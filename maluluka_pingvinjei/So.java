@@ -1,17 +1,16 @@
 /**
- * A Hókotró által a csúszásmentesítéshez használt szóróanyagot reprezentálja. 
+ * A Hókotró által a jégmentesítéshez használt szóróanyagot reprezentálja. 
  * Tárolja a rendelkezésre álló mennyiséget és a beszerzési árat. 
  * Az ITargy interfész megvalósításával lehetővé teszi a kereskedelmi egységekben történő vásárlást.
  */
-
-public class Rock implements ITargy{
-    /** A zúzott kő egységnyi ára. */
+public class So implements ITargy {
+    /** A só egységnyi ára. */
     private int ar;
 
-    /** A játékosnál lévő zúzott kő mennyisége. */
+    /** A játékosnál lévő só mennyisége. */
     private int mennyiseg;
 
-    Rock(int ar){
+    So(int ar){
         this.ar=ar;
         mennyiseg=10;
     }
@@ -22,8 +21,8 @@ public class Rock implements ITargy{
     }
 
     /**
-     * Visszaadja a játékosnál lévő zúzott kő mennyiségét.
-     * @return A kő mennyisége.
+     * Visszaadja a játékosnál lévő só mennyiségét.
+     * @return A só mennyisége.
      */
     public int getMennyiseg() {
         return this.mennyiseg;
@@ -31,8 +30,8 @@ public class Rock implements ITargy{
 
     @Override
     public void applyTo(Hokotro gep) {
-        gep.getRock().novel(10);
-        System.out.println("-> Zúzott kő készlet feltöltve! Jelenlegi mennyiség: " + gep.getRock().getMennyiseg() + " egység.");
+        gep.getSo().novel(10);
+        System.out.println("-> Só készlet feltöltve! Jelenlegi mennyiség: " + gep.getSo().getMennyiseg() + " egység.");
     }
 
     public void setMennyiseg(int ujMennyiseg){
@@ -40,7 +39,7 @@ public class Rock implements ITargy{
     }
 
     /**
-     * Levonja a kiszórt kőmennyiséget a készletből.
+     * Levonja a kiszórt sómennyiséget a készletből.
      * @param menny A csökkentendő mennyiség.
      */
     public void csokkent(int menny) {
@@ -56,9 +55,6 @@ public class Rock implements ITargy{
      * @param menny A mennyiség, amivel növelni kell a készletet.
      */
     public void novel(int menny) {
-        mennyiseg+=menny;
-        if(mennyiseg >= 20){
-            mennyiseg = 20;
-        }
+       mennyiseg+=menny;
     }
 }

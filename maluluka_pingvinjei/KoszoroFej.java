@@ -17,11 +17,11 @@ public class KoszoroFej extends Kotrofej {
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
         
-        Rock rock = gep.getRock();
-        int mennyiseg = rock.getMennyiseg();
+        ZuzottKo ko = gep.getZuzottKo();
+        int mennyiseg = ko.getMennyiseg();
         
         if (mennyiseg > 0) { 
-            rock.csokkent(1); 
+            ko.csokkent(1); 
             sav.setKo(true); 
         }
     }

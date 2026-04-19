@@ -1,16 +1,17 @@
 /**
- * A Hókotró által a jégmentesítéshez használt szóróanyagot reprezentálja. 
+ * A Hókotró által a csúszásmentesítéshez használt szóróanyagot reprezentálja. 
  * Tárolja a rendelkezésre álló mennyiséget és a beszerzési árat. 
  * Az ITargy interfész megvalósításával lehetővé teszi a kereskedelmi egységekben történő vásárlást.
  */
-public class Salt implements ITargy {
-    /** A só egységnyi ára. */
+
+public class ZuzottKo implements ITargy{
+    /** A zúzott kő egységnyi ára. */
     private int ar;
 
-    /** A játékosnál lévő só mennyisége. */
+    /** A játékosnál lévő zúzott kő mennyisége. */
     private int mennyiseg;
 
-    Salt(int ar){
+    ZuzottKo(int ar){
         this.ar=ar;
         mennyiseg=10;
     }
@@ -21,8 +22,8 @@ public class Salt implements ITargy {
     }
 
     /**
-     * Visszaadja a játékosnál lévő só mennyiségét.
-     * @return A só mennyisége.
+     * Visszaadja a játékosnál lévő zúzott kő mennyiségét.
+     * @return A kő mennyisége.
      */
     public int getMennyiseg() {
         return this.mennyiseg;
@@ -30,8 +31,8 @@ public class Salt implements ITargy {
 
     @Override
     public void applyTo(Hokotro gep) {
-        gep.getSalt().novel(10);
-        System.out.println("-> Só készlet feltöltve! Jelenlegi mennyiség: " + gep.getSalt().getMennyiseg() + " egység.");
+        gep.getZuzottKo().novel(10);
+        System.out.println("-> Zúzott kő készlet feltöltve! Jelenlegi mennyiség: " + gep.getZuzottKo().getMennyiseg() + " egység.");
     }
 
     public void setMennyiseg(int ujMennyiseg){
@@ -39,7 +40,7 @@ public class Salt implements ITargy {
     }
 
     /**
-     * Levonja a kiszórt sómennyiséget a készletből.
+     * Levonja a kiszórt kőmennyiséget a készletből.
      * @param menny A csökkentendő mennyiség.
      */
     public void csokkent(int menny) {
@@ -55,6 +56,9 @@ public class Salt implements ITargy {
      * @param menny A mennyiség, amivel növelni kell a készletet.
      */
     public void novel(int menny) {
-       mennyiseg+=menny;
+        mennyiseg+=menny;
+        if(mennyiseg >= 20){
+            mennyiseg = 20;
+        }
     }
 }

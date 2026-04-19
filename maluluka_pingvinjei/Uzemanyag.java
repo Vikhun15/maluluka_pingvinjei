@@ -2,13 +2,13 @@
  * A Hókotró Sárkányfejének működéséhez szükséges üzemanyagot reprezentálja.
  * Nyilvántartja az aktuális üzemanyagszintet és az árat.
  */
-public class Fuel implements ITargy {
+public class Uzemanyag implements ITargy {
     /** Az üzemanyag egységára. */
     private int ar;
     /** A jelenleg a játékosnál lévő üzemanyag mennyisége literben. */
     private int literek;
 
-    Fuel(int ar) {
+    Uzemanyag(int ar) {
         this.ar = ar;
         this.literek = 20; 
     }
@@ -28,8 +28,8 @@ public class Fuel implements ITargy {
 
     @Override
     public void applyTo(Hokotro gep) {
-        gep.getFuel().tankol(20);
-        System.out.println("-> Üzemanyag feltankolva! Jelenlegi mennyiség: " + gep.getFuel().getLiterek() + " liter.");
+        gep.getUzemanyag().tankol(20);
+        System.out.println("-> Üzemanyag feltankolva! Jelenlegi mennyiség: " + gep.getUzemanyag().getLiterek() + " liter.");
     }
 
     /**

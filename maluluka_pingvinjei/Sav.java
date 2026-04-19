@@ -30,10 +30,10 @@ public class Sav {
      * Ha az utóbbi eléri a hármat, akkor a kő hatása megszűnik.
      */
     public void hoEsik() {
+        hoRetegek++;
         if(hoRetegek >=8){
             jarhato = false;
         }
-        hoRetegek++;
         if(kovezve){
             hoRetegKovon++;
         }
@@ -79,11 +79,16 @@ public class Sav {
      */
     public void havatTol(Sav hova) {
         this.hoRetegek = 0;
-        if(kovezve && hova != null){
-            hova.setKo(true);
+
+        if (hova != null){
+            hova.hoEsik();
+            
+            if(kovezve){
+                hova.setKo(true);
+            }
         }
+
         kovezve = false;
-        if (hova != null) hova.hoEsik(); 
     }
 
     /**

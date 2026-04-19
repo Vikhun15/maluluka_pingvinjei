@@ -22,7 +22,7 @@ public class SarkanyFej extends Kotrofej {
     public void hatasKifejtese(Sav sav, Hokotro gep) {
         
         // 1. Elkérjük a hókotrótól az üzemanyagtartályt
-        Fuel fuel = gep.getFuel();
+        Uzemanyag fuel = gep.getUzemanyag();
         
         // 2. Megnézzük, van-e benne legalább 5 liter
         if (fuel != null && fuel.getLiterek() >= 5) {
@@ -33,8 +33,9 @@ public class SarkanyFej extends Kotrofej {
             // 4. Levonjuk a felhasznált 5 liter kerozint
             fuel.fogyaszt(5);
             
-        } else {
-            // ez lesz a nincsen benga eset.
+        } else if(fuel.getLiterek() < 5) {
+            System.out.println("Sikertelen langszoras! Nincs eleg biokerozin a hokotrodban!");
+            System.out.println(fuel.getLiterek() + " liter biokerozinod van.");
         }
     }
 }
