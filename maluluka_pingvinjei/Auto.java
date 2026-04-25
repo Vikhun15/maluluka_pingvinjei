@@ -26,7 +26,7 @@ public class Auto extends Jarmu {
 
         this.setAktualisSav(hova);
 
-        if (hova.jeges() || hova.getTorottJeg() && !hova.koves()) {
+        if (hova.jeges() || (hova.getTorottJeg() && !hova.koves())) {
             this.csuszkal(hova);
             if (this.kimaradoKorok > 0) return;
         }

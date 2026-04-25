@@ -30,31 +30,23 @@ public class Sav {
      * Ha az utóbbi eléri a hármat, akkor a kő hatása megszűnik.
      */
     public void hoEsik() {
-        hoRetegek++;
-        if(hoRetegek >=8){
-            jarhato = false;
-        }
-        if(kovezve){
-            hoRetegKovon++;
-        }
-        if(sozva){
-            hoRetegek -= 2;
-            if(hoRetegek < 0){
-                hoRetegek = 0;
-            }
-            if(kovezve){
-                hoRetegKovon -= 2;
-                if(hoRetegKovon < 0){
-                    hoRetegKovon = 0;
-                }
-            }
-        }
-        
-        if(hoRetegKovon >= 3){
-            hoRetegKovon = 0;
-            kovezve = false;
+    hoRetegek++;
+    if (kovezve) hoRetegKovon++;
+    if (sozva) {
+        hoRetegek -= 2;
+        if (hoRetegek < 0) hoRetegek = 0;
+        if (kovezve) {
+            hoRetegKovon -= 2;
+            if (hoRetegKovon < 0) hoRetegKovon = 0;
         }
     }
+    
+    jarhato = (hoRetegek < 8);
+    if (hoRetegKovon >= 3) {
+        hoRetegKovon = 0;
+        kovezve = false;
+    }
+}
 
     public void setUtszakasz(Utszakasz ut) {
         this.szuloUtszakasz = ut;

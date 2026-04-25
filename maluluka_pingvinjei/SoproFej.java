@@ -22,14 +22,18 @@ public class SoproFej extends Kotrofej {
      */
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
-        
-        //Ezzel áttolja a havat és a zúzott követ a szomszédos sávba
-        List<Sav> savok = sav.getUtszakasz().getSavok();
+        Utszakasz ut = sav.getUtszakasz();
+        if (ut == null) {
+            sav.havatTol(null); // ha nincs szomszéd, csak söpri
+            return;
+        }
+        List<Sav> savok = ut.getSavok();
         for (Sav s : savok) {
-            if(!s.equals(sav)){
+            if (!s.equals(sav)) {
                 sav.havatTol(s);
+                return; // csak az első szomszédba tolja
             }
         }
-
+        sav.havatTol(null); // ha nincs szomszéd
     }
 }

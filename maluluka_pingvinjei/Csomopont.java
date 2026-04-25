@@ -1,7 +1,7 @@
 /**
  * Egy olyan absztrakt osztály, amely a gráf alapú úthálózat csúcsait reprezentálja.
  */
-public abstract class Csomopont {
+public class Csomopont { //ha absztrakt nem lehet létrehozni a pályát !!!! ez így bajos
     protected int id;
     protected static int nextId = 0;
     

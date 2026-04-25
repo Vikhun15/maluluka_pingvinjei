@@ -37,6 +37,7 @@ public class Hokotro extends Jarmu {
         super();
         this.penz = 0;
         this.so = new So(10);
+        this.zuzottKo = new ZuzottKo(10);
         this.uzemanyag = new Uzemanyag(20);
         this.birtokoltFejek = new ArrayList<>();
     }
@@ -95,8 +96,9 @@ public class Hokotro extends Jarmu {
 
         // 5. MUNKA
         hova.jarmuAthalad();
+        if (this.aktualisFej != null) {
         this.aktualisFej.hatasKifejtese(hova, this);
-        
+        }   
     }
 
     // Getterek a fejek számára a működéshez
