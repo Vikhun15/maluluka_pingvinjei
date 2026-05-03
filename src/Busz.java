@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A buszvezető által irányított jármű, célja a végállomások közötti ingázás.
  */
@@ -7,7 +9,7 @@ public class Busz extends Jarmu {
     private int megfordulasokSzama;
 
     public Busz(Sav induloSav) {
-        super(induloSav);
+        super();
         this.megfordulasokSzama = 0;
     }
 

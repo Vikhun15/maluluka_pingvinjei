@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A takarító által vezetett jármű, amely kotrófejekkel takarítja az utat.
  * Magában foglalja a pénzkészletet, a sót és az üzemanyagot.

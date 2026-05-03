@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A Kotrofej egy absztrakt ősosztály, amiből leszármazik az összes kotrófej.
  * Mivel megvalósítja az ITargy interfészt, megvásárolható a boltban.
@@ -25,7 +27,7 @@ public abstract class Kotrofej implements ITargy {
      * @param id
      * @param ar
      */
-    Kotrofej(int id, int ar) {
+    Kotrofej(int ar) {
         this.id = nextId++;
         this.ar = ar;
     }  

@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A Hókotró Sárkányfejének működéséhez szükséges üzemanyagot reprezentálja.
  * Nyilvántartja az aktuális üzemanyagszintet és az árat.

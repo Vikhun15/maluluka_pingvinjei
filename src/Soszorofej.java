@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A sószóró fej egy olyan hókotróra szerelhető kotrófej, ami sót szór a sávra, így takarítva az utat].
  * Működéséhez elengedhetetlen a só, amelyet a sávra tud szórni.

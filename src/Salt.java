@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A Hókotró által a jégmentesítéshez használt szóróanyagot reprezentálja. 
  * Tárolja a rendelkezésre álló mennyiséget és a beszerzési árat. 
@@ -9,6 +11,11 @@ public class Salt implements ITargy {
 
     /** A játékosnál lévő só mennyisége. */
     private int mennyiseg;
+
+    public Salt(int ar){
+        this.ar = ar;
+        this.mennyiseg = 0;
+    }
 
     @Override
     public int getAr() {

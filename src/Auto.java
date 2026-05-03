@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Az autó feladata az otthona és munkahelye közötti közlekedés.
  * Áthaladása elősegíti az utak jegesedését.
@@ -5,10 +7,17 @@
 public class Auto extends Jarmu {
 
     /** A jármű jelenlegi tartózkodási helye */
-    protected Sav aktualisSav;
+    protected int start;
+    protected int end;
 
-   public Auto(Sav induloSav) {
-        super(induloSav);
+    public Auto(int start, int end){
+        super();
+        this.start = start;
+        this.end = end;
+    }
+
+    public void setAktualisSav(Sav aktualisSav) {
+        super.setAktualisSav(aktualisSav);
     }
 
     /**

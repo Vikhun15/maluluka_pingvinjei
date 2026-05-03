@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Absztrakt ősosztály a pályán mozgó járművekhez.
  * Felelős a mozgásért, a jégen csúszásért és a karambolok kezeléséért.
@@ -18,9 +20,8 @@ public abstract class Jarmu {
     /**
      * Konstruktor, amely beállítja az egyedi azonosítót.
      */
-    public Jarmu(Sav induloSav) {
+    public Jarmu() {
         this.id = nextId++;
-        this.aktualisSav = induloSav;
         this.kimaradoKorok = 0;
     }
 

@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A Sav osztályon keresztül tudnak eljutni a járművek az egyik csomópontból a másikba.
  * Nyilvántartja a hórétegeket, a jeget, és kezeli a forgalom okozta jegesedést.

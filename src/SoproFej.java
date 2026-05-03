@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A Soprofej egy speciális Kotrofej, amely egyedi módon, söpréssel takarítja le, aminek
  * következtében a feltört jég eltűnik, a hó pedig áttolódik másik sávra.

@@ -1,3 +1,5 @@
+package src;
+
 /**
  * Az ITargy interfész biztosítja a különböző megvásárolható tárgyak, mint a só, az üzemanyag vagy a kotrófejek heterogén kollekcióban való tárolását és kezelését.
  */

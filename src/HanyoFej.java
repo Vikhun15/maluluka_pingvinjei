@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A HanyoFej egy Kotrofej, amely a sávon lévő havat és a feltört jeget az út mellé szórja,
  * ezáltal megtisztítva az adott sávot anélkül, hogy a szomszédos sávba tolná azt.

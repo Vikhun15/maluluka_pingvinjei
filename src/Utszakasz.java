@@ -1,3 +1,5 @@
+package src;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +16,16 @@ public class Utszakasz {
     /** Az útszakaszhoz tartozó sávok listája. */
     protected List<Sav> savok = new ArrayList<>();
 
-    public Utszakasz() {
+    /** Az útszakasz kezdő csomópontja. */
+    protected Csomopont kezdoCsomopont;
+    
+    /** Az útszakasz végső csomópontja. */
+    protected Csomopont vegCsomopont;
+
+    public Utszakasz(Csomopont kezdo, Csomopont veg) {
         this.id = nextId++;
+        this.kezdoCsomopont = kezdo;
+        this.vegCsomopont = veg;
     }
 
     /**
@@ -23,7 +33,6 @@ public class Utszakasz {
      * @return Sávok listája.
      */
     public List<Sav> getSavok() {
-        //? ehhez késő van
         return savok;
     }
 

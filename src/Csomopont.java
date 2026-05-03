@@ -1,13 +1,17 @@
+package src;
+
 /**
- * Egy olyan absztrakt osztály, amely a gráf alapú úthálózat csúcsait reprezentálja.
+ * Egy olyan osztály, amely a gráf alapú úthálózat csúcsait reprezentálja.
  * Képes járművek befogadására, és útszakaszok indulnak ki belőle, vagy érkeznek be ide.
  */
-public abstract class Csomopont {
+public class Csomopont {
     /** Az adott csomópont egyedi azonosítója. */
     protected int id;
     
     /** Automatikus sorszámozáshoz használt statikus számláló. */
     protected static int nextId = 0;
+
+    private Epulet epulet = null;
 
     /**
      * Konstruktor, amely beállítja az egyedi azonosítót.
@@ -15,6 +19,8 @@ public abstract class Csomopont {
     public Csomopont() {
         this.id = nextId++;
     }
+
+
 
     /**
      * Regisztrálja és befogadja a paraméterként kapott járművet.
@@ -30,5 +36,13 @@ public abstract class Csomopont {
      */
     public void jarmuKilep(Jarmu jarmu) {
         //?
+    }
+
+    public Epulet getEpulet() {
+        return epulet;
+    }
+
+    public void setEpulet(Epulet epulet) {
+        this.epulet = epulet;
     }
 }

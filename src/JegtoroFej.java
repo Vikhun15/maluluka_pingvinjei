@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A Jegtorofej egy speciális Kotrofej, amely egyedi módon interaktál a sávokkal, a rajtuk
  * található jeget feltöri, így feltörtjeget képezve[cite: 331].
@@ -18,10 +20,6 @@ public class JegtoroFej extends Kotrofej {
      */
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
-        SkeletonLogger.enter("JegtoroFej.hatasKifejtese(Sav, Hokotro)");
-        
-        sav.jegetTor(); // [cite: 650]
-        
-        SkeletonLogger.exit("JegtoroFej.hatasKifejtese(Sav, Hokotro)");
+        sav.jegetTor();
     }
 }
