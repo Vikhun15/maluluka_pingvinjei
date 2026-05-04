@@ -1,0 +1,8 @@
+load palya_bolt.txt
+random off
+create Hokotro HK1 Sav_1
+create Auto A1 Sav_1
+put jeg Sav_1
+move HK1 Sav_1
+buy Bolt_1 Hokotro
+stat all

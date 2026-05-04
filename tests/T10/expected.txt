@@ -1,0 +1,7 @@
+OK: load sikeres.
+OK: create sikeres.
+OK: move sikeres.
+[Csomopont: Csomopont_1]
+aktualisJarmu: null
+[Sav: Sav_2]
+jarmuvek: A1

@@ -1,0 +1,5 @@
+load palya_keresztezodes.txt
+create Auto A1 Sav_1
+move A1 Sav_2
+stat Csomopont_1
+stat Sav_2

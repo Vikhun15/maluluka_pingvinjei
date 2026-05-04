@@ -1,0 +1,7 @@
+load palya_2sav.txt
+create Hokotro HK1 Sav_0
+give HK1 SoproFej
+put ho Sav_1
+move HK1 Sav_1
+stat Sav_1
+stat Sav_2

@@ -1,0 +1,7 @@
+load palya_1sav.txt
+put zuzottKo Sav_1
+stat Sav_1
+put ho Sav_1
+put ho Sav_1
+put ho Sav_1
+stat Sav_1

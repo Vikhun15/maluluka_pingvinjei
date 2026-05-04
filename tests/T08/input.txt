@@ -1,0 +1,5 @@
+load palya_bolt.txt
+create Hokotro HK1 Bolt_1 Sav_1
+buy HK1 HanyoFej
+swap HK1 HanyoFej
+stat HK1

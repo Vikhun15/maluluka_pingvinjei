@@ -1,0 +1,8 @@
+OK: load sikeres.
+OK: step sikeres.
+[Sav: Sav_Sima]
+hoRetegek: 1
+[Sav: Sav_Hid]
+hoRetegek: 2
+[Sav: Sav_Alagut]
+hoRetegek: 0

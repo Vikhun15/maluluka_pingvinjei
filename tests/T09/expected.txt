@@ -1,0 +1,13 @@
+OK: load sikeres.
+OK: random sikeres.
+OK: create sikeres.
+OK: create sikeres.
+OK: put sikeres.
+OK: move sikeres.
+OK: buy sikeres.
+[Hokotro: HK1]
+kimaradoKorok: 3
+[Auto: A1]
+kimaradoKorok: 3
+[Hokotro: HK2]
+pozicio: Bolt_1

@@ -1,0 +1,5 @@
+load palya_komplex.txt
+step 5
+save allapot_mentve.txt
+load allapot_mentve.txt
+stat all

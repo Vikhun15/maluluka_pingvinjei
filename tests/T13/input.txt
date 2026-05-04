@@ -1,0 +1,13 @@
+load palya_1sav.txt
+random off
+put jeg Sav_1
+put zuzottKo Sav_1
+create Auto A2 Sav_1
+create Auto A1 Sav_0
+move A1 Sav_1
+stat A1
+stat A2
+create Hokotro HK1 Sav_1
+give HK1 SoproFej
+move HK1 Sav_1
+stat Sav_1

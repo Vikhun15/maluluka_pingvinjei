@@ -1,0 +1,6 @@
+build node Csomopont C1
+build node Csomopont C2
+build road SimaUtszakasz U1 C1 C2
+build lane U1 Sav_1
+create Auto A1 Sav_1
+stat all

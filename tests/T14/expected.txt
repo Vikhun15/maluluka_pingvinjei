@@ -1,0 +1,12 @@
+OK: load sikeres.
+OK: put sikeres.
+[Sav: Sav_1]
+kovezve: true
+hoRetegek: 0
+hoRetegekKovon: 0
+OK: put sikeres.
+OK: put sikeres.
+OK: put sikeres.
+[Sav: Sav_1]
+kovezve: false
+hoRetegek: 3

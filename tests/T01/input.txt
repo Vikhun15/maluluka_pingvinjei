@@ -1,0 +1,5 @@
+load palya_t01.txt
+step 1
+stat Sav_Sima
+stat Sav_Hid
+stat Sav_Alagut

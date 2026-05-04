@@ -1,0 +1,8 @@
+load palya_1sav.txt
+random off
+create Auto A1 Sav_0
+create Auto A2 Sav_1
+put jeg Sav_1
+move A1 Sav_1
+stat A1
+stat A2
