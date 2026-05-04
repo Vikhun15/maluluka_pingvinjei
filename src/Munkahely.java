@@ -1,4 +1,7 @@
 package src;
 
-public class Munkahely extends Epulet{
+/**
+ * The type Munkahely.
+ */
+public class Munkahely extends Epulet {
 }

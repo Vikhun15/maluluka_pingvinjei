@@ -6,6 +6,11 @@ package src;
  */
 public class Soszorofej extends Kotrofej {
 
+    /**
+     * Instantiates a new Soszorofej.
+     *
+     * @param ar the ar
+     */
     public Soszorofej(int ar) {
         super(ar);
     }
@@ -13,18 +18,19 @@ public class Soszorofej extends Kotrofej {
     /**
      * Implementálja a Kotrofej metódusát, meghívásakor a paraméterek között
      * szereplő sávot leszórja sóval, ha van a játékosnál.
+     *
      * @param sav A sáv, amin a hatást ki kell fejteni.
      * @param gep A hókotró, amire a fej fel van szerelve.
      */
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
-        
-        Salt salt = gep.getSalt();
+
+        Salt salt = gep.getSo();
         int mennyiseg = salt.getMennyiseg();
-        
-        if (mennyiseg > 0) { 
-            salt.csokkent(1); 
-            sav.setSozva(true); 
+
+        if (mennyiseg > 0) {
+            salt.csokkent(1);
+            sav.setSozva(true);
         }
     }
 }

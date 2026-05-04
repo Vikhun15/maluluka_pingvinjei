@@ -1,4 +1,7 @@
 package src;
 
-public class Otthon extends Epulet{
+/**
+ * The type Otthon.
+ */
+public class Otthon extends Epulet {
 }

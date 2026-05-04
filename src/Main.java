@@ -1,10 +1,16 @@
 package src;
 
 
-import java.util.ArrayList;
-
+/**
+ * The type Main.
+ */
 public class Main {
-    public static void main(String[] args){
-        Map map = new Map();
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
+        Palya palya = new Palya();
     }
 }

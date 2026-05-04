@@ -6,7 +6,15 @@ package src;
 public interface ITargy {
     /**
      * Visszaadja a tárgy vételárát.
+     *
      * @return A tárgy ára.
      */
     int getAr();
+
+    /**
+     * Apply to.
+     *
+     * @param gep the gep
+     */
+    void applyTo(Hokotro gep);
 }

@@ -7,21 +7,37 @@ import java.util.List;
  * Két csomópontot összekötő alapegység. Fő feladata a sávok összefogása.
  */
 public class Utszakasz {
-    /** Az útszakasz egyedi azonosítója. */
+    /**
+     * Az útszakasz egyedi azonosítója.
+     */
     protected int id;
-    
-    /** Automatikus sorszámozáshoz használt számláló. */
+
+    /**
+     * Automatikus sorszámozáshoz használt számláló.
+     */
     protected static int nextId = 0;
-    
-    /** Az útszakaszhoz tartozó sávok listája. */
+
+    /**
+     * Az útszakaszhoz tartozó sávok listája.
+     */
     protected List<Sav> savok = new ArrayList<>();
 
-    /** Az útszakasz kezdő csomópontja. */
+    /**
+     * Az útszakasz kezdő csomópontja.
+     */
     protected Csomopont kezdoCsomopont;
-    
-    /** Az útszakasz végső csomópontja. */
+
+    /**
+     * Az útszakasz végső csomópontja.
+     */
     protected Csomopont vegCsomopont;
 
+    /**
+     * Instantiates a new Utszakasz.
+     *
+     * @param kezdo the kezdo
+     * @param veg   the veg
+     */
     public Utszakasz(Csomopont kezdo, Csomopont veg) {
         this.id = nextId++;
         this.kezdoCsomopont = kezdo;
@@ -30,6 +46,7 @@ public class Utszakasz {
 
     /**
      * Visszaadja az útszakaszhoz tartozó sávok listáját.
+     *
      * @return Sávok listája.
      */
     public List<Sav> getSavok() {
@@ -40,8 +57,17 @@ public class Utszakasz {
      * Havazás esetén hívódik meg, növeli a sávokon a hórétegek számát.
      */
     public void hoEsik() {
-        for(Sav s : savok) {
+        for (Sav s : savok) {
             s.hoEsik();
         }
+    }
+
+    /**
+     * Gets veg pont.
+     *
+     * @return the veg pont
+     */
+    public Csomopont getVegPont() {
+        return this.vegCsomopont;
     }
 }

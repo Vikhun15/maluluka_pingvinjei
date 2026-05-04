@@ -5,6 +5,12 @@ package src;
  */
 public class Hid extends Utszakasz {
 
+    /**
+     * Instantiates a new Hid.
+     *
+     * @param start the start
+     * @param end   the end
+     */
     public Hid(Csomopont start, Csomopont end) {
         super(start, end);
     }
@@ -14,6 +20,9 @@ public class Hid extends Utszakasz {
      */
     @Override
     public void hoEsik() {
-        //?
+        for (Sav s : savok) {
+            s.hoEsik();
+            s.hoEsik();
+        }
     }
 }

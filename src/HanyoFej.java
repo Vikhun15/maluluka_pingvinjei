@@ -6,20 +6,26 @@ package src;
  */
 public class HanyoFej extends Kotrofej {
 
+    /**
+     * Instantiates a new Hanyo fej.
+     *
+     * @param ar the ar
+     */
     public HanyoFej(int ar) {
         super(ar);
     }
 
     /**
      * Kifejti a hányófej specifikus hatását a paraméterben kapott sávon.
+     *
      * @param sav A sáv, amin a hatást ki kell fejteni.
      * @param gep A hókotró, amire a fej fel van szerelve.
      */
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
-        
+
         // ha null akkor nincsen szomszédos sáv
-        sav.havatTol(null); 
-        
+        sav.havatTol(null);
+
     }
 }

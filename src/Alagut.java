@@ -5,14 +5,22 @@ package src;
  */
 public class Alagut extends Utszakasz {
 
-    public Alagut(Csomopont start, Csomopont end) {
-        super(start, end);
+
+    /**
+     * Instantiates a new Alagut.
+     *
+     * @param kezdo the kezdo
+     * @param veg   the veg
+     */
+    public Alagut(Csomopont kezdo, Csomopont veg) {
+        super(kezdo, veg);
     }
 
     /**
      * Felülírja az ősosztály metódusát, hogy az alagútba ne essen hó.
      */
     @Override
-    public void hoEsik() {}
-        
+    public void hoEsik() {
+    }
+
 }

@@ -5,14 +5,23 @@ package src;
  * Nyilvántartja az aktuális üzemanyagszintet és az árat.
  */
 public class Fuel implements ITargy {
-    /** Az üzemanyag egységára. */
-    private int ar;
-    /** A jelenleg a játékosnál lévő üzemanyag mennyisége literben. */
+    /**
+     * Az üzemanyag egységára.
+     */
+    private final int ar;
+    /**
+     * A jelenleg a játékosnál lévő üzemanyag mennyisége literben.
+     */
     private int literek;
 
+    /**
+     * Instantiates a new Fuel.
+     *
+     * @param ar the ar
+     */
     Fuel(int ar) {
         this.ar = ar;
-        this.literek = 0; 
+        this.literek = 0;
     }
 
     @Override
@@ -22,22 +31,31 @@ public class Fuel implements ITargy {
 
     /**
      * Csökkenti az üzemanyag mennyiségét.
+     *
      * @param menny A felhasznált mennyiség.
      */
     public void fogyaszt(int menny) {
         this.literek -= menny;
     }
 
+    @Override
+    public void applyTo(Hokotro gep) {
+        gep.getUzemanyag().tankol(20);
+        System.out.println("-> Üzemanyag feltankolva! Jelenlegi mennyiség: " + gep.getUzemanyag().getLiterek() + " liter.");
+    }
+
     /**
      * Visszaadja a jelenlegi üzemanyag mennyiségét.
+     *
      * @return Az üzemanyag mennyisége literben.
      */
     public int getLiterek() {
         return this.literek;
-    }   
+    }
 
     /**
      * Növeli az üzemanyag mennyiségét.
+     *
      * @param menny A tankolt mennyiség.
      */
     public void tankol(int menny) {

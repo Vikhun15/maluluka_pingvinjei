@@ -1,0 +1,37 @@
+A játék során lesznek utak, amelyek fajtái: 
+sima út/többsávos
+híd
+alagút
+Az utaknak lesznek állapotaik is:
+túl mély hó: nem tudnak átmenni rajtuk a járművek
+vékonyabb hó: tudnak a járművek rajtuk közlekedni
+jégpáncél: vékonyabb hóból lesz, ha ötször áthalad rajta bármilyen jármű. Autók elkezdenek rajta csúszkálni, ha kettő összecsúszik, járhatatlanná válik az út.
+Autó: 
+Fix céljuk, hogy a munkahelyük és a lakásuk között közlekedjenek.
+Mindig a legrövidebb úton közlekednek.
+Hókotrók: 
+Játékosok által választható.
+Kezdetben választhat, hogy jégtörővel vagy hányóval szeretne kezdeni.
+Céljuk, hogy az utakat tisztán tartsák.
+Egyszerre csak egy sávot tud takarítani.
+Minden letisztított útsáv után pénzt kap a játékos, amiből új kotrófejeket vásárolhatnak.
+Különböző kotrófejekkel rendelkeznek, melyeket a játkos cserélgethet, illetve vásárolhat.
+Kotrófejek:
+Söprő: Oldalra tolja a havat, és ez lehet szomszédos sáv vagy út mellé. Csak havat és feltört jeget tudnak takarítani.
+Hányó: Ugyanúgy oldalra, de messzebbre szórja a havat. Csak havat és feltört jeget tudnak takarítani.
+Jégtörő: A jeget töri fel, de nem takarítja el azt.
+Sószóró: Sót szór, ki egy idő után elolvasztja a havat és a jeget, és megakadályozza, hogy a lehulló hó megmaradjon. Olvadási idő a hó és a jég vastagságától függ. Só nélkül nem használható.
+Sárkány fej: Gázturbinával felolvasztja a jeget és a havat a hókotró alól. Működéséhez biokerozin kell.
+Busz:
+Céljuk, hogy két végállomás között minél többször megforduljon.
+Játékosok irányítják őket.
+Ha buszba belemegy egy autó vagy egy másik busz, akkor mozgásképtelenné válik egy időre.
+Játékos:
+Választhat, hogy busszal vagy hókotróval játszik.
+Mindkét járműből szerepelhet több is.
+A játékosok egyesével léphetnek egymás után.
+Bolt: 
+Kotrófejeket lehet venni pingvinért.
+Árak növekvő sorrendben: söprő, hány, jégtörő, sószóró, sárkányfej, hókotró
+Itt lehet biokerozint és sót venni.
+[A feladat kb. 4000 karakteres (kb 1,5 oldal) részletezettségű magyar nyelvű leírása. Nem szerepelhetnek informatikai kifejezések.]
