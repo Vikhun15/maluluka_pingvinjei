@@ -324,6 +324,7 @@ public class TestManager {
 
         Hokotro h = new Hokotro();
         h.ujFejetBegyujt(new SarkanyFej(200));
+        h.getUzemanyag().tankol(20);
         int elotte = h.getUzemanyag().getLiterek();
         h.takarit(s);
 
@@ -356,6 +357,7 @@ public class TestManager {
         Sav s = new Sav();
         Hokotro h = new Hokotro();
         h.ujFejetBegyujt(new Soszorofej(80));
+        h.getSo().novel(10);
         int elotte = h.getSo().getMennyiseg();
         h.takarit(s);
 

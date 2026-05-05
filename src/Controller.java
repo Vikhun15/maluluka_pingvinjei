@@ -17,7 +17,7 @@ public class Controller {
      */
     public void run(Palya palya, View view) {
         while (true) {
-            view.display(palya);
+            //view.display(palya);
             view.showMenu();
             String command = getInput("Enter command: ");
             if (!processCommand(command, palya, view)) {
