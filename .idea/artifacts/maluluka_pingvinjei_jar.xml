@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="maluluka_pingvinjei:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/maluluka_pingvinjei_jar</output-path>
+    <root id="archive" name="maluluka_pingvinjei.jar">
+      <element id="module-output" name="maluluka_pingvinjei" />
+    </root>
+  </artifact>
+</component>
