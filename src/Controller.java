@@ -17,7 +17,6 @@ public class Controller {
      */
     public void run(Palya palya, View view) {
         while (true) {
-            //view.display(palya);
             view.showMenu();
             String command = getInput("Enter command: ");
             if (!processCommand(command, palya, view)) {
@@ -34,8 +33,7 @@ public class Controller {
      */
     public void runWithoutBloat(Palya palya, View view) {
         while (true) {
-            view.display(palya);
-            String command = getInput("Enter command: ");
+            String command = getInput("");
             if (!processCommand(command, palya, view)) {
                 break;
             }
