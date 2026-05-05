@@ -144,12 +144,12 @@ public class Proto {
             System.out.println("ERROR: move <jármű_id> <sav_id>");
             return;
         }
-        Jarmu j = jarmuvek.get(t[1]);
-        Sav hova = savok.get(t[2]);
-        if (j == null || hova == null) {
+        if (!jarmuvek.containsKey(t[1]) || !savok.containsKey(t[2])) {
             System.out.println("ERROR: Ismeretlen jármű vagy sáv.");
             return;
         }
+        Jarmu j = jarmuvek.get(t[1]);
+        Sav hova = savok.get(t[2]);
         j.mozog(hova);
         System.out.println("OK: move sikeres.");
     }
@@ -186,10 +186,11 @@ public class Proto {
 
     private static void kiirJarmu(String id, Jarmu j) {
         System.out.println("[" + j.getClass().getSimpleName() + ": " + id + "]");
-        if (j.getAktualisSav() != null)
-            System.out.println("pozicio: " + j.getAktualisSav().getUtszakasz());
-        if (j instanceof Hokotro h)
+        java.util.Optional.ofNullable(j.getAktualisSav()).ifPresent(s -> System.out.println("pozicio: " + s.getUtszakasz()));
+        if ("Hokotro".equals(j.getClass().getSimpleName())) {
+            Hokotro h = (Hokotro) j;
             System.out.println("penz: " + h.getPenz());
+        }
     }
 
     private static void parancsSave(String[] t) {

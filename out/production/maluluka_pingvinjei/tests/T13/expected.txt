@@ -1,0 +1,15 @@
+OK: load sikeres.
+OK: random sikeres.
+OK: put sikeres.
+OK: put sikeres.
+OK: create sikeres.
+OK: move sikeres.
+[Auto: A1]
+kimaradoKorok: 0
+[Auto: A2]
+kimaradoKorok: 0
+OK: create sikeres.
+OK: give sikeres.
+OK: move sikeres.
+[Sav: Sav_1]
+kovezve: false

@@ -1,0 +1,6 @@
+OK: load sikeres.
+OK: step sikeres.
+OK: save sikeres.
+OK: load sikeres.
+[Sav: Sav_1]
+hoRetegek: 5

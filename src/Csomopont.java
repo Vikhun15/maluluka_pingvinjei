@@ -23,6 +23,16 @@ public class Csomopont {
     protected Jarmu aktualisJarmu = null;
 
     /**
+     * X koordináta
+     */
+    private int x;
+
+    /**
+     * Y koordináta
+     */
+    private int y;
+
+    /**
      * Konstruktor, amely beállítja az egyedi azonosítót.
      */
     public Csomopont() {
@@ -36,13 +46,11 @@ public class Csomopont {
      * @param jarmu A befogadandó jármű.
      */
     public void jarmuBefogad(Jarmu jarmu) {
-        if (this.aktualisJarmu != null) {
-            this.aktualisJarmu.karambolozik();
+        java.util.Optional.ofNullable(this.aktualisJarmu).ifPresentOrElse(j -> {
+            j.karambolozik();
             jarmu.karambolozik();
             System.out.println("KARAMBOL! Járművek ütköztek a csomópontban. Mindkét jármű 3 körig kimarad.");
-        } else {
-            this.aktualisJarmu = jarmu;
-        }
+        }, () -> this.aktualisJarmu = jarmu);
     }
 
     /**
@@ -51,9 +59,7 @@ public class Csomopont {
      * @param jarmu Az elhaladó jármű.
      */
     public void jarmuKilep(Jarmu jarmu) {
-        if (this.aktualisJarmu == jarmu) {
-            this.aktualisJarmu = null;
-        }
+        java.util.Optional.ofNullable(this.aktualisJarmu).filter(j -> j == jarmu).ifPresent(j -> this.aktualisJarmu = null);
     }
 
     /**
@@ -81,5 +87,41 @@ public class Csomopont {
      */
     public Jarmu getAktualisJarmu() {
         return aktualisJarmu;
+    }
+
+    /**
+     * Gets x.
+     *
+     * @return the x
+     */
+    public int getX() {
+        return x;
+    }
+
+    /**
+     * Sets x.
+     *
+     * @param x the x
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    /**
+     * Gets y.
+     *
+     * @return the y
+     */
+    public int getY() {
+        return y;
+    }
+
+    /**
+     * Sets y.
+     *
+     * @param y the y
+     */
+    public void setY(int y) {
+        this.y = y;
     }
 }

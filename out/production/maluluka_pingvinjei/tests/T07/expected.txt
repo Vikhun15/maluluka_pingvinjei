@@ -1,0 +1,10 @@
+OK: load sikeres.
+OK: random sikeres.
+OK: create sikeres.
+OK: create sikeres.
+OK: put sikeres.
+OK: move sikeres.
+[Auto: A1]
+kimaradoKorok: 3
+[Auto: A2]
+kimaradoKorok: 3

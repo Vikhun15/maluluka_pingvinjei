@@ -1,0 +1,10 @@
+OK: build node sikeres.
+OK: build node sikeres.
+OK: build road sikeres.
+OK: build lane sikeres.
+OK: create sikeres.
+[Csomopont: C1]
+[Sav: Sav_1]
+jarmuvek: A1
+[Auto: A1]
+pozicio: Sav_1

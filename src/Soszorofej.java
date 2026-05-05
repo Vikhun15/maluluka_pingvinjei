@@ -25,7 +25,7 @@ public class Soszorofej extends Kotrofej {
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
 
-        Salt salt = gep.getSo();
+        So salt = gep.getSo();
         int mennyiseg = salt.getMennyiseg();
 
         if (mennyiseg > 0) {

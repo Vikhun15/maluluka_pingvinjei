@@ -1,9 +1,15 @@
 package src;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+
 /**
  * The type Test.
  */
-public class Test {
+public class TestManager {
 
     /**
      * The Passed.
@@ -15,11 +21,10 @@ public class Test {
     static int failed = 0;
 
     /**
-     * The entry point of application.
+     * The entry point of the tests
      *
-     * @param args the input arguments
      */
-    public static void main(String[] args) {
+    public void runTests() {
         System.out.println("=== Hókotró Szimuláció - Egyszerű Teszt ===\n");
 
         testHoesesSima();
@@ -38,8 +43,111 @@ public class Test {
         testKarambol();
         testCsuszkas();
 
-        System.out.println("\n=== Eredmény: " + passed + " passed, " + failed + " failed ===");
+        System.out.println("\n=== Fájl alapú Integrációs Tesztek (tests mappa) ===\n");
+        runAutomatedFileTests();
+
+        System.out.println("\n=== VÉGSŐ EREDMÉNY: " + passed + " passed, " + failed + " failed ===");
     }
+
+    // --- Fájl alapú automatizált tesztek logikája ---
+
+    /**
+     * Megkeresi a tests mappát, és végigmegy az összes Txx almappán.
+     */
+    private void runAutomatedFileTests() {
+        File testsDir = new File("tests");
+
+        if (!testsDir.exists() || !testsDir.isDirectory()) {
+            System.out.println("FIGYELMEZTETÉS: A 'tests' mappa nem található itt: " + testsDir.getAbsolutePath());
+            return;
+        }
+
+        File[] testFolders = testsDir.listFiles();
+        if (testFolders != null) {
+            Arrays.sort(testFolders);
+            for (File folder : testFolders) {
+                if (folder.isDirectory()) {
+                    runSingleFileTest(folder);
+                }
+            }
+        }
+    }
+
+    /**
+     * Egyetlen mappa (pl. T01) tesztjének futtatása.
+     */
+    private void runSingleFileTest(File testFolder) {
+        File inputFile = new File(testFolder, "input.txt");
+        File expectedFile = new File(testFolder, "expected.txt");
+
+        if (!inputFile.exists() || !expectedFile.exists()) {
+            System.out.println("  [SKIP] " + testFolder.getName() + " - Hiányzik az input.txt vagy az expected.txt");
+            return;
+        }
+
+        InputStream originalIn = System.in;
+        PrintStream originalOut = System.out;
+
+        try {
+            FileInputStream fis = new FileInputStream(inputFile);
+            System.setIn(fis);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            System.setOut(new PrintStream(baos));
+
+            simulateGameExecution();
+
+            System.out.flush();
+            fis.close();
+
+            String actualOutput = normalizeLineEndings(baos.toString());
+            String expectedOutput = normalizeLineEndings(Files.readString(expectedFile.toPath()));
+
+            System.setOut(originalOut);
+            System.setIn(originalIn);
+
+            // 6. Összehasonlítás
+            if (actualOutput.trim().equals(expectedOutput.trim())) {
+                System.out.println("  [PASS] " + testFolder.getName());
+                passed++;
+            } else {
+                System.out.println("  [FAIL] " + testFolder.getName());
+                System.out.println("         Az elvárt kimenet eltér a kapottól!");
+                failed++;
+            }
+
+        } catch (Exception e) {
+            System.setOut(originalOut);
+            System.setIn(originalIn);
+            System.out.println("  [FAIL] " + testFolder.getName() + " - Kivétel történt: " + e.getMessage());
+            e.printStackTrace();
+            failed++;
+        }
+    }
+
+    /**
+     * Elindítja a játékot. Mivel a System.in és System.out át van irányítva
+     * az e metódus körüli try-catch blokkban, a Controller a fájlból fog olvasni.
+     */
+    private void simulateGameExecution() {
+        View view = new View();
+        Palya palya = new Palya();
+
+        Controller controller = new Controller();
+
+        controller.run(palya, view);
+    }
+
+    /**
+     * Eltávolítja a Windows/Linux sorvégződés különbségeket (\r\n vs \n).
+     * Ez nagyon fontos a stringek összehasonlításánál!
+     */
+    private String normalizeLineEndings(String str) {
+        if (str == null) return "";
+        return str.replace("\r\n", "\n").replace("\r", "\n");
+    }
+
+
 
     // --- Segédmetódus ---
 

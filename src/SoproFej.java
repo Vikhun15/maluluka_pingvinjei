@@ -27,17 +27,15 @@ public class SoproFej extends Kotrofej {
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
         Utszakasz ut = sav.getUtszakasz();
-        if (ut == null) {
-            sav.havatTol(null); // ha nincs szomszéd, csak söpri
-            return;
-        }
-        List<Sav> savok = ut.getSavok();
-        for (Sav s : savok) {
-            if (!s.equals(sav)) {
-                sav.havatTol(s);
-                return; // csak az első szomszédba tolja
+        java.util.Optional.ofNullable(ut).ifPresentOrElse(u -> {
+            List<Sav> savok = u.getSavok();
+            for (Sav s : savok) {
+                if (!s.equals(sav)) {
+                    sav.havatTol(s);
+                    return;
+                }
             }
-        }
-        sav.havatTol(null); // ha nincs szomszéd
+            sav.havatTol(null); // ha nincs szomszéd
+        }, () -> sav.havatTol(null));
     }
 }

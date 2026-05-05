@@ -1,0 +1,12 @@
+OK: load sikeres.
+OK: create sikeres.
+OK: give sikeres.
+OK: put sikeres.
+OK: move sikeres.
+[Sav: Sav_1]
+hoRetegek: 1
+sozva: true
+OK: step sikeres.
+[Sav: Sav_1]
+hoRetegek: 0
+sozva: true

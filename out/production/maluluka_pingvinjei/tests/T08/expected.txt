@@ -1,0 +1,7 @@
+OK: load sikeres.
+OK: create sikeres.
+OK: buy sikeres.
+OK: swap sikeres.
+[Hokotro: HK1]
+penz: 20
+aktualis Fej: HanyoFej

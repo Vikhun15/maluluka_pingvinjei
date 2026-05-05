@@ -4,7 +4,7 @@ package src;
  * A Hókotró Sárkányfejének működéséhez szükséges üzemanyagot reprezentálja.
  * Nyilvántartja az aktuális üzemanyagszintet és az árat.
  */
-public class Fuel implements ITargy {
+public class Uzemanyag implements ITargy {
     /**
      * Az üzemanyag egységára.
      */
@@ -15,15 +15,20 @@ public class Fuel implements ITargy {
     private int literek;
 
     /**
-     * Instantiates a new Fuel.
+     * Üzemanyag konstruktora az árat beállítva.
      *
-     * @param ar the ar
+     * @param ar az üzemanyag egységára
      */
-    Fuel(int ar) {
+    Uzemanyag(int ar) {
         this.ar = ar;
         this.literek = 0;
     }
 
+    /**
+     * Az üzemanyag egységárát adja vissza.
+     *
+     * @return az ár
+     */
     @Override
     public int getAr() {
         return this.ar;
@@ -32,12 +37,17 @@ public class Fuel implements ITargy {
     /**
      * Csökkenti az üzemanyag mennyiségét.
      *
-     * @param menny A felhasznált mennyiség.
+     * @param menny a felhasznált mennyiség
      */
     public void fogyaszt(int menny) {
         this.literek -= menny;
     }
 
+    /**
+     * Az üzemanyagot alkalmazza a hókotrón.
+     *
+     * @param gep a hókotró
+     */
     @Override
     public void applyTo(Hokotro gep) {
         gep.getUzemanyag().tankol(20);
@@ -47,7 +57,7 @@ public class Fuel implements ITargy {
     /**
      * Visszaadja a jelenlegi üzemanyag mennyiségét.
      *
-     * @return Az üzemanyag mennyisége literben.
+     * @return az üzemanyag mennyisége literben
      */
     public int getLiterek() {
         return this.literek;
@@ -56,9 +66,10 @@ public class Fuel implements ITargy {
     /**
      * Növeli az üzemanyag mennyiségét.
      *
-     * @param menny A tankolt mennyiség.
+     * @param menny a tankolt mennyiség
      */
     public void tankol(int menny) {
         this.literek += menny;
     }
 }
+

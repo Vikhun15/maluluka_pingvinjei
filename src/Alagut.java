@@ -21,6 +21,7 @@ public class Alagut extends Utszakasz {
      */
     @Override
     public void hoEsik() {
+        //Nem történik semmi, mert az alagútba nem esik hó.
     }
 
 }

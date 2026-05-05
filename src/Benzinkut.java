@@ -7,7 +7,7 @@ package src;
 public class Benzinkut extends Bolt {
 
     /**
-     * Instantiates a new Benzinkut.
+     * Benzinkut konstruktora.
      */
     public Benzinkut() {
         super();
@@ -15,12 +15,16 @@ public class Benzinkut extends Bolt {
 
     /**
      * Felülírja a Bolt elad metódusát. Csak akkor engedi a vásárlást,
-     * ha a termék Só (Salt) vagy Üzemanyag (Fuel).
+     * ha a termék Só (So) vagy Üzemanyag (Uzemanyag).
+     * 
+     * @param termek az értékesítendő termék
+     * @param gep a hókotró, amely a terméket megvásárol
      */
     @Override
     public void elad(ITargy termek, Hokotro gep) {
 
-        if (termek instanceof Salt || termek instanceof Fuel || termek instanceof ZuzottKo) {
+        String className = termek.getClass().getSimpleName();
+        if ("So".equals(className) || "Uzemanyag".equals(className) || "ZuzottKo".equals(className)) {
             super.elad(termek, gep);
         }
     }

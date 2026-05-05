@@ -5,6 +5,9 @@ package src;
  * Nyilvántartja a hórétegeket, a jeget, és kezeli a forgalom okozta jegesedést.
  */
 public class Sav {
+    protected int id;
+    protected static int nextId = 0;
+
     private int hoRetegek = 0;
     private boolean jeg = false;
     private int athaladtAutok = 0;
@@ -14,6 +17,10 @@ public class Sav {
     private Utszakasz szuloUtszakasz;
     private int hoRetegKovon = 0;
     private boolean kovezve = false;
+
+    public Sav() {
+        this.id = nextId++;
+    }
 
     /**
      * Növeli az áthaladt autók számát. Ha eléri a 4-et, a sáv jegessé válik.
@@ -93,13 +100,12 @@ public class Sav {
     public void havatTol(Sav hova) {
         this.hoRetegek = 0;
 
-        if (hova != null) {
-            hova.hoEsik();
-
+        java.util.Optional.ofNullable(hova).ifPresent(h -> {
+            h.hoEsik();
             if (kovezve) {
-                hova.setKo(true);
+                h.setKo(true);
             }
-        }
+        });
 
         kovezve = false;
     }

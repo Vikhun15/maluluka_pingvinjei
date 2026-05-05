@@ -20,14 +20,14 @@ public class Hokotro extends Jarmu {
     /**
      * A hókotró sókészlete.
      */
-    private final Salt salt;
+    private final So so;
 
     private final ArrayList<Kotrofej> birtokoltFejek;
 
     /**
      * A hókotró üzemanyagkészlete.
      */
-    private final Fuel fuel;
+    private final Uzemanyag uzemanyag;
 
     /**
      * A hókotró zúzott kő készlete.
@@ -37,25 +37,25 @@ public class Hokotro extends Jarmu {
     /**
      * Inicializálja a hókotrót az alapértelmezett erőforrásokkal.
      *
-     * @param indul the indul
+     * @param indul avez sáv, ahol kezdődik
      */
     public Hokotro(Sav indul) {
         super(indul);
         this.penz = 0;
-        this.salt = new Salt(10);
-        this.fuel = new Fuel(20);
+        this.so = new So(10);
+        this.uzemanyag = new Uzemanyag(20);
         this.birtokoltFejek = new ArrayList<>();
         this.zuzottKo = new ZuzottKo(10);
     }
 
     /**
-     * Instantiates a new Hokotro.
+     * Üres Hokotro konstruktora.
      */
     public Hokotro() {
         super();
         this.penz = 0;
-        this.salt = new Salt(10);
-        this.fuel = new Fuel(20);
+        this.so = new So(10);
+        this.uzemanyag = new Uzemanyag(20);
         this.birtokoltFejek = new ArrayList<>();
         this.zuzottKo = new ZuzottKo(10);
     }
@@ -63,19 +63,17 @@ public class Hokotro extends Jarmu {
     /**
      * Az aktív kotrófejen meghívja a hatasKifejtese metódust a megadott sávon.
      *
-     * @param sav A tisztítandó sáv.
+     * @param sav a tisztítandó sáv
      */
     public void takarit(Sav sav) {
-        if (aktualisFej != null) {
-            aktualisFej.hatasKifejtese(sav, this);
-        }
+        java.util.Optional.ofNullable(aktualisFej).ifPresent(f -> f.hatasKifejtese(sav, this));
     }
 
     /**
      * Ezt hívja meg az új fej, amikor megvásárolják a boltban.
-     * Beteszi a listába, és (opcionálisan) rögtön fel is szereli.
+     * Beteszi a listába, és rögtön fel is szereli.
      *
-     * @param ujFej the uj fej
+     * @param ujFej az új kotrófej
      */
     public void ujFejetBegyujt(Kotrofej ujFej) {
         this.birtokoltFejek.add(ujFej);
@@ -84,9 +82,9 @@ public class Hokotro extends Jarmu {
     }
 
     /**
-     * Visszaadja a birtokolt fejek listáját (pl. a UI vagy a tesztelő számára).
+     * Visszaadja a birtokolt fejek listáját.
      *
-     * @return the birtokolt fejek
+     * @return a birtokolt fejek
      */
     public ArrayList<Kotrofej> getBirtokoltFejek() {
         return this.birtokoltFejek;
@@ -95,95 +93,102 @@ public class Hokotro extends Jarmu {
     /**
      * Kicseréli a hókotró aktív kotrófejét.
      *
-     * @param ujFej Az új felszerelendő kotrófej.
+     * @param ujFej az új felszerelendő kotrófej
      */
     public void fejetCserel(Kotrofej ujFej) {
         this.aktualisFej = ujFej;
     }
 
+    /**
+     * Végrehajtja a jármű mozgását.
+     */
     @Override
     public void mozog(Sav hova) {
-        if (this.kimaradoKorok > 0) return; // 1. Ha törött, meg sem mozdul
+        if (this.kimaradoKorok > 0) return;
 
-        this.setAktualisSav(hova); // 2. Rálép a sávra
+        this.setAktualisSav(hova);
 
         if (hova.jeges() || hova.getTorottJeg() && !hova.koves()) {
-            this.csuszkal(hova); // 3. Jég-check 
+            this.csuszkal(hova);
             if (this.kimaradoKorok > 0) return;
         }
 
-        // 4. BEÉRKEZÉS ÉS ÜTKÖZÉS-VIZSGÁLAT
         Csomopont cel = hova.getUtszakasz().getVegPont();
         cel.jarmuBefogad(this);
 
-        if (this.kimaradoKorok > 0) return; // Ha a csomópontban ütközött, nem takarít
+        if (this.kimaradoKorok > 0) return;
 
-        // 5. MUNKA
         hova.jarmuAthalad();
-        if (this.aktualisFej != null) {
-            this.aktualisFej.hatasKifejtese(hova, this);
-        }
+        java.util.Optional.ofNullable(this.aktualisFej).ifPresent(f -> f.hatasKifejtese(hova, this));
     }
 
     /**
-     * Gets so.
+     * Visszaadja a hókotró sójait.
      *
-     * @return the so
+     * @return a só
      */
-// Getterek a fejek számára a működéshez
-    public Salt getSo() {
-        return salt;
+    public So getSo() {
+        return so;
     }
 
     /**
-     * Gets uzemanyag.
+     * Visszaadja a hókotró üzemanyagát.
      *
-     * @return the uzemanyag
+     * @return az üzemanyag
      */
-    public Fuel getUzemanyag() {
-        return fuel;
+    public Uzemanyag getUzemanyag() {
+        return uzemanyag;
     }
 
     /**
-     * Gets zuzott ko.
+     * Visszaadja a hókotró zúzott kő készletét.
      *
-     * @return the zuzott ko
+     * @return a zúzott kő
      */
     public ZuzottKo getZuzottKo() {
         return zuzottKo;
     }
 
     /**
-     * Gets penz.
+     * Visszaadja a hókotró pénzét.
      *
-     * @return the penz
+     * @return a pénz mennyisége
      */
     public int getPenz() {
         return penz;
     }
 
     /**
-     * Penz keres.
+     * Beállítja a hókotró pénzét.
      *
-     * @param osszeg the osszeg
+     * @param penz az új pénz mennyisége
+     */
+    public void setPenz(int penz) {
+        this.penz = penz;
+    }
+
+    /**
+     * Pénzt szerez a hókotró.
+     *
+     * @param osszeg a keresett összeg
      */
     public void penzKeres(int osszeg) {
         this.penz += osszeg;
     }
 
     /**
-     * Penz levon.
+     * Levonja a pénzt a hókotrótól.
      *
-     * @param osszeg the osszeg
+     * @param osszeg a levont összeg
      */
     public void penzLevon(int osszeg) {
         this.penz -= osszeg;
     }
 
     /**
-     * Gets aktualis fej.
+     * Visszaadja a jelenlegi aktuális fejet.
      *
-     * @return the aktualis fej
+     * @return az aktuális kotrófej
      */
     public Kotrofej getAktualisFej() {
         return aktualisFej;

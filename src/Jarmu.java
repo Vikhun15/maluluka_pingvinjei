@@ -71,10 +71,10 @@ public abstract class Jarmu {
         if (esely <= 0.30) {
             Csomopont vegPont = hova.getUtszakasz().getVegPont();
             Jarmu masikJarmu = vegPont.getAktualisJarmu();
-            if (masikJarmu != null) {
-                masikJarmu.karambolozik();
+            java.util.Optional.ofNullable(masikJarmu).ifPresent(m -> {
+                m.karambolozik();
                 this.karambolozik();
-            }
+            });
         }
     }
 

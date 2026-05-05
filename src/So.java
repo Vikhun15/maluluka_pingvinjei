@@ -5,7 +5,7 @@ package src;
  * Tárolja a rendelkezésre álló mennyiséget és a beszerzési árat.
  * Az ITargy interfész megvalósításával lehetővé teszi a kereskedelmi egységekben történő vásárlást.
  */
-public class Salt implements ITargy {
+public class So implements ITargy {
     /**
      * A só egységnyi ára.
      */
@@ -17,15 +17,20 @@ public class Salt implements ITargy {
     private int mennyiseg;
 
     /**
-     * Instantiates a new Salt.
+     * Só konstruktora az árat beállítva.
      *
-     * @param ar the ar
+     * @param ar az egységár
      */
-    public Salt(int ar) {
+    public So(int ar) {
         this.ar = ar;
         this.mennyiseg = 0;
     }
 
+    /**
+     * A só egységárát adja vissza.
+     *
+     * @return az ár
+     */
     @Override
     public int getAr() {
         return this.ar;
@@ -34,32 +39,36 @@ public class Salt implements ITargy {
     /**
      * Visszaadja a játékosnál lévő só mennyiségét.
      *
-     * @return A só mennyisége.
+     * @return a só mennyisége
      */
     public int getMennyiseg() {
         return this.mennyiseg;
     }
 
     /**
-     * Sets mennyiseg.
+     * A só mennyiségét beállítja.
      *
-     * @param ujMennyiseg the uj mennyiseg
+     * @param ujMennyiseg az új mennyiség
      */
     public void setMennyiseg(int ujMennyiseg) {
         mennyiseg = ujMennyiseg;
     }
 
+    /**
+     * A sót alkalmazza a hókotrón.
+     *
+     * @param gep a hókotró
+     */
     @Override
     public void applyTo(Hokotro gep) {
         gep.getSo().novel(10);
         System.out.println("-> Só készlet feltöltve! Jelenlegi mennyiség: " + gep.getSo().getMennyiseg() + " egység.");
     }
 
-
     /**
      * Levonja a kiszórt sómennyiséget a készletből.
      *
-     * @param menny A csökkentendő mennyiség.
+     * @param menny a csökkentendő mennyiség
      */
     public void csokkent(int menny) {
         int ujMennyiseg = this.getMennyiseg() - menny;
@@ -72,9 +81,10 @@ public class Salt implements ITargy {
     /**
      * Hozzáadja a vásárolt mennyiséget a készlethez.
      *
-     * @param menny A mennyiség, amivel növelni kell a készletet.
+     * @param menny a mennyiség, amivel növelni kell a készletet
      */
     public void novel(int menny) {
         mennyiseg += menny;
     }
 }
+

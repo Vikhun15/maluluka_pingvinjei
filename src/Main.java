@@ -1,16 +1,18 @@
 package src;
 
-
 /**
- * The type Main.
+ * A Main osztály a program belépési pontja.
  */
 public class Main {
     /**
-     * The entry point of application.
+     * A program fő metódusa.
      *
-     * @param args the input arguments
+     * @param args parancssori argumentumok
      */
     public static void main(String[] args) {
         Palya palya = new Palya();
+        View view = new View();
+        Controller controller = new Controller();
+        controller.run(palya, view);
     }
 }

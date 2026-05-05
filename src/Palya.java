@@ -26,10 +26,25 @@ public class Palya {
         GenerateMap();
     }
 
+    /**
+     * Instantiates a new Palya for loading.
+     *
+     * @param csomopontok the csomopontok
+     * @param utszakaszok the utszakaszok
+     * @param jarmuvek    the jarmuvek
+     */
+    public Palya(ArrayList<Csomopont> csomopontok, ArrayList<Utszakasz> utszakaszok, ArrayList<Jarmu> jarmuvek) {
+        this.csomopontok = csomopontok;
+        this.utszakaszok = utszakaszok;
+        this.jarmuvek = jarmuvek;
+    }
+
     private void GenerateMap() {
 
         for (int i = 0; i < MAX_NODES; i++) {
             Csomopont csomopont = new Csomopont();
+            csomopont.setX(random.nextInt(1000)); // Random x between 0-999
+            csomopont.setY(random.nextInt(1000)); // Random y between 0-999
             if (random.nextBoolean()) {
                 int type = random.nextInt(3);
                 switch (type) {
@@ -95,25 +110,53 @@ public class Palya {
 
 
     }
-
+    /**
+     * Egy Auto járművet generál otthon és munkahelypontokkal.
+     *
+     * @return az új Auto jármű
+     */
     private Auto generateAuto() {
-        Epulet start = null;
-        Epulet end = null;
+        Epulet start = csomopontok.stream()
+                .map(Csomopont::getEpulet)
+                .filter(java.util.Objects::nonNull)
+                .filter(e -> "Otthon".equals(e.getClass().getSimpleName()))
+                .findFirst()
+                .orElse(null);
 
-        for (int j = 0; j < csomopontok.size(); j++) {
-            if (csomopontok.get(j).getEpulet() instanceof Otthon) {
-                start = csomopontok.get(j).getEpulet();
-                break;
-            }
-        }
-
-        for (int j = 0; j < csomopontok.size(); j++) {
-            if (csomopontok.get(j).getEpulet() instanceof Munkahely) {
-                end = csomopontok.get(j).getEpulet();
-                break;
-            }
-        }
+        Epulet end = csomopontok.stream()
+                .map(Csomopont::getEpulet)
+                .filter(java.util.Objects::nonNull)
+                .filter(e -> "Munkahely".equals(e.getClass().getSimpleName()))
+                .findFirst()
+                .orElse(null);
 
         return new Auto(start, end);
+    }
+
+    /**
+     * Visszaadja a csomópontok listáját.
+     *
+     * @return a csomópontok
+     */
+    public ArrayList<Csomopont> getCsomopontok() {
+        return csomopontok;
+    }
+
+    /**
+     * Visszaadja az útszakaszok listáját.
+     *
+     * @return az útszakaszok
+     */
+    public ArrayList<Utszakasz> getUtszakaszok() {
+        return utszakaszok;
+    }
+
+    /**
+     * Visszaadja a járművek listáját.
+     *
+     * @return a járművek
+     */
+    public ArrayList<Jarmu> getJarmuvek() {
+        return jarmuvek;
     }
 }
