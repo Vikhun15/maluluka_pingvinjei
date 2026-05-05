@@ -27,6 +27,22 @@ public class Controller {
     }
 
     /**
+     * Elindítja a játék fő ciklusát a menü nélkül.
+     *
+     * @param palya a játék pályája
+     * @param view a nézet, amely megjeleníti az információkat
+     */
+    public void runWithoutBloat(Palya palya, View view) {
+        while (true) {
+            view.display(palya);
+            String command = getInput("Enter command: ");
+            if (!processCommand(command, palya, view)) {
+                break;
+            }
+        }
+    }
+
+    /**
      * Feldolgozza a felhasználó parancsát.
      *
      * @param command a parancs szövege

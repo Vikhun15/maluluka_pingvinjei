@@ -134,8 +134,7 @@ public class TestManager {
         Palya palya = new Palya();
 
         Controller controller = new Controller();
-
-        controller.run(palya, view);
+        controller.runWithoutBloat(palya, view);
     }
 
     /**
