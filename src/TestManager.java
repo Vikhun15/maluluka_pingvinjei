@@ -106,6 +106,11 @@ public class TestManager {
             System.setOut(originalOut);
             System.setIn(originalIn);
 
+            System.out.println("Expected output:\n");
+            System.out.println(expectedOutput);
+            System.out.println("Actual output:\n");
+            System.out.println(actualOutput);
+
             // 6. Összehasonlítás
             if (actualOutput.trim().equals(expectedOutput.trim())) {
                 System.out.println("  [PASS] " + testFolder.getName());
@@ -323,6 +328,7 @@ public class TestManager {
 
         Hokotro h = new Hokotro();
         h.ujFejetBegyujt(new SarkanyFej(200));
+        h.getUzemanyag().tankol(20);
         int elotte = h.getUzemanyag().getLiterek();
         h.takarit(s);
 
@@ -355,6 +361,7 @@ public class TestManager {
         Sav s = new Sav();
         Hokotro h = new Hokotro();
         h.ujFejetBegyujt(new Soszorofej(80));
+        h.getSo().novel(10);
         int elotte = h.getSo().getMennyiseg();
         h.takarit(s);
 
