@@ -106,6 +106,11 @@ public class TestManager {
             System.setOut(originalOut);
             System.setIn(originalIn);
 
+            System.out.println("Expected output:\n");
+            System.out.println(expectedOutput);
+            System.out.println("Actual output:\n");
+            System.out.println(actualOutput);
+
             // 6. Összehasonlítás
             if (actualOutput.trim().equals(expectedOutput.trim())) {
                 System.out.println("  [PASS] " + testFolder.getName());
