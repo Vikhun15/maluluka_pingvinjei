@@ -33,7 +33,7 @@ public class Controller {
      */
     public void runWithoutBloat(Palya palya, View view) {
         while (true) {
-            String command = getInput("Enter command: ");
+            String command = getInput("");
             if (!processCommand(command, palya, view)) {
                 break;
             }
