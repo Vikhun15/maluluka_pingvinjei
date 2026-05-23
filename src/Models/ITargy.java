@@ -13,6 +13,8 @@ public interface ITargy {
 
     public String getNev();
 
+    public ITargy masol();
+
     /**
      * Apply to.
      *

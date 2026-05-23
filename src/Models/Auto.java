@@ -6,21 +6,12 @@ package Models;
  */
 public class Auto extends Jarmu {
 
-    /**
-     * A jármű jelenlegi tartózkodási helye
-     */
     protected Epulet otthon;
-
-    /**
-     * The Munkahely.
-     */
     protected Epulet munkahely;
 
-    /**
-     * Instantiates a new Auto.
-     *
-     * @param sav the sav
-     */
+    // Állapotjelző: igaz, ha a munkahelyre tart. Hamis, ha hazafelé.
+    private boolean munkabaMegy = true;
+
     public Auto(Sav sav) {
         super(sav);
         this.otthon = null;
@@ -28,12 +19,6 @@ public class Auto extends Jarmu {
         this.setJarmuTipus("Auto");
     }
 
-    /**
-     * Instantiates a new Auto.
-     *
-     * @param otthon    the otthon
-     * @param munkahely the munkahely
-     */
     public Auto(Epulet otthon, Epulet munkahely) {
         super();
         this.otthon = otthon;
@@ -41,69 +26,52 @@ public class Auto extends Jarmu {
         this.setJarmuTipus("Auto");
     }
 
+
+    /**
+     * Visszaadja azt az épületet, ahová az autó jelenleg tart.
+     */
+    public Epulet getAktualisCel() {
+        return munkabaMegy ? munkahely : otthon;
+    }
+
+    /**
+     * Megfordítja az autó haladási irányát (ha megérkezett a céljába).
+     */
+    public void megfordul() {
+        munkabaMegy = !munkabaMegy;
+        System.out.println("Egy autó célba ért, és megfordult a következő körre.");
+    }
+
     public void setAktualisSav(Sav aktualisSav) {
         super.setAktualisSav(aktualisSav);
     }
 
-    /**
-     * Sets otthon.
-     *
-     * @param otthon the otthon
-     */
-    public void setOtthon(Epulet otthon) {
-        this.otthon = otthon;
+    public void setOtthon(Epulet otthon) { this.otthon = otthon; }
+    public void setMunkahely(Epulet munkahely) { this.munkahely = munkahely; }
+    public Epulet getOtthon() { return otthon; }
+    public Epulet getMunkahely() { return munkahely; }
+
+    @Override
+    public void elindul(Sav hova, Csomopont cel) {
+        super.elindul(hova, cel);
     }
 
-    /**
-     * Sets munkahely.
-     *
-     * @param munkahely the munkahely
-     */
-    public void setMunkahely(Epulet munkahely) {
-        this.munkahely = munkahely;
-    }
-
-    /**
-     * Gets otthon.
-     *
-     * @return the otthon
-     */
-    public Epulet getOtthon() {
-        return otthon;
-    }
-
-    /**
-     * Gets munkahely.
-     *
-     * @return the munkahely
-     */
-    public Epulet getMunkahely() {
-        return munkahely;
-    }
-
-    /**
-     * Felülírja a mozog metódust, hogy a tervezett útvonalon haladjon.
-     * Ennél a típusnál a játékos nem választ irányt.
-     *
-     * @param hova A következő sáv az útvonalon.
-     */
     @Override
     public void mozog(Sav hova) {
         if (this.kimaradoKorok > 0) return;
 
         this.setAktualisSav(hova);
 
+        Csomopont cel = hova.getUtszakasz().getVegPont();
         if (hova.jeges() || (hova.getTorottJeg() && !hova.koves())) {
-            this.csuszkal(hova);
+            this.csuszkal(hova, cel);
             if (this.kimaradoKorok > 0) return;
         }
 
-        Csomopont cel = hova.getUtszakasz().getVegPont();
         cel.jarmuBefogad(this);
 
         if (this.kimaradoKorok > 0) return;
 
-        // HALAD
         hova.jarmuAthalad();
         notifyObservers();
     }

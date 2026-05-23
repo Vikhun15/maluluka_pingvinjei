@@ -39,4 +39,10 @@ public class SoproFej extends Kotrofej {
             sav.havatTol(null); // ha nincs szomszéd
         }, () -> sav.havatTol(null));
     }
+
+
+    @Override
+    public ITargy masol(){
+        return new SoproFej(this.ar);
+    }
 }

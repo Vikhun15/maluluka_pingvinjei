@@ -38,4 +38,10 @@ public class SarkanyFej extends Kotrofej {
             System.out.println(uzemanyag.getLiterek() + " liter biokerozinod van.");
         }
     }
+
+
+    @Override
+    public ITargy masol(){
+        return new SarkanyFej(this.ar);
+    }
 }

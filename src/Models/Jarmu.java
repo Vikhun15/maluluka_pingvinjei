@@ -70,6 +70,8 @@ public abstract class Jarmu implements IObservable {
     private int x;
     private int y;
 
+    protected Csomopont celCsomopont = null;
+
     /**
      * Konstruktor, amely beállítja az egyedi azonosítót.
      */
@@ -98,23 +100,56 @@ public abstract class Jarmu implements IObservable {
         notifyObservers();
     }
 
-    /**
-     * A jármű jégpáncélon történő megcsúszását szimulálja.
-     * A csúszás következtében a jármű elveszítheti az irányítást.
-     *
-     * @param hova the hova
-     */
-    public void csuszkal(Sav hova) {
-        double esely = rng.nextDouble();
+    public void elindul(Sav hova, Csomopont cel) {
+        if (this.kimaradoKorok > 0) return;
 
-        //ez potenciálisan lehetne jó ütközés logikának, vagy hasonló
-        if (esely <= 0.30) {
-            Csomopont vegPont = hova.getUtszakasz().getVegPont();
+        if (this.aktualisCsomopont != null) {
+            this.aktualisCsomopont.jarmuKilep(this);
+            this.aktualisCsomopont = null;
+        }
+
+        this.aktualisSav = hova;
+        this.celCsomopont = cel;
+
+        hova.jarmuAthalad();
+        notifyObservers();
+    }
+
+    /**
+     * 2. FÁZIS: A jármű a következő körben beér a csomópontba.
+     */
+    public void megerkezik() {
+        if (this.kimaradoKorok > 0 || this.celCsomopont == null || this.aktualisSav == null) return;
+
+        if (aktualisSav.jeges() || (aktualisSav.getTorottJeg() && !aktualisSav.getKovezve())) {
+            this.csuszkal(aktualisSav, celCsomopont);
+            if (this.kimaradoKorok > 0) return;
+        }
+
+        this.aktualisCsomopont = celCsomopont;
+        this.celCsomopont.jarmuBefogad(this);
+
+        this.celCsomopont = null;
+        this.aktualisSav = null;
+
+        notifyObservers();
+    }
+
+    public void csuszkal(Sav hova, Csomopont vegPont) {
+        double esely = rng.nextDouble();
+        if (esely <= 0.10) {
             Jarmu masikJarmu = vegPont.getAktualisJarmu();
-            java.util.Optional.ofNullable(masikJarmu).ifPresent(m -> {
-                m.karambolozik();
+            if (masikJarmu != null) {
+                System.out.println("BUMM! " + this.getJarmuTipus() + " karambolozott!");
+                masikJarmu.karambolozik();
                 this.karambolozik();
-            });
+            } else {
+                System.out.println("HUH! " + this.getJarmuTipus() + " megcsúszott a jégen, de az út üres volt!");
+                this.aktualisCsomopont = vegPont;
+                vegPont.jarmuBefogad(this);
+                this.celCsomopont = null;
+                this.aktualisSav = null;
+            }
         }
     }
 

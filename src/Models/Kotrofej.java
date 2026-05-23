@@ -18,9 +18,6 @@ public abstract class Kotrofej implements ITargy {
 
     private String nev;
 
-    /**
-     * The constant nextId.
-     */
     /*
      * A következő id azonosító.
      */
@@ -67,4 +64,5 @@ public abstract class Kotrofej implements ITargy {
     public void setNev(String nev) {
         this.nev = nev;
     }
+
 }

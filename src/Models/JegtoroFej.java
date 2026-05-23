@@ -29,4 +29,10 @@ public class JegtoroFej extends Kotrofej {
     public void hatasKifejtese(Sav sav, Hokotro gep) {
         sav.jegetTor();
     }
+
+
+    @Override
+    public ITargy masol(){
+        return new JegtoroFej(this.ar);
+    }
 }

@@ -50,12 +50,12 @@ public class Busz extends Jarmu {
 
         this.setAktualisSav(hova);
 
+        Csomopont cel = hova.getUtszakasz().getVegPont();
         if (hova.jeges() || hova.getTorottJeg() && !hova.koves()) {
-            this.csuszkal(hova);
+            this.csuszkal(hova, cel);
             if (this.kimaradoKorok > 0) return;
         }
 
-        Csomopont cel = hova.getUtszakasz().getVegPont();
         cel.jarmuBefogad(this);
 
         if (this.kimaradoKorok > 0) return;

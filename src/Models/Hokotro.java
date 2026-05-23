@@ -68,7 +68,38 @@ public class Hokotro extends Jarmu {
      * @param sav a tisztítandó sáv
      */
     public void takarit(Sav sav) {
-        java.util.Optional.ofNullable(aktualisFej).ifPresent(f -> f.hatasKifejtese(sav, this));
+        if (aktualisFej == null) {
+            System.out.println("Nincs kotrófej felszerelve, nem lehet takarítani!");
+            return;
+        }
+
+        int hoElotte = sav.getHoRetegek();
+        boolean jegElotte = sav.jeges();
+        boolean torottJegElotte = sav.getTorottJeg();
+
+        aktualisFej.hatasKifejtese(sav, this);
+
+        int hoUtana = sav.getHoRetegek();
+        boolean jegUtana = sav.jeges();
+        boolean torottJegUtana = sav.getTorottJeg();
+
+        int eltavolitottHo = Math.max(0, hoElotte - hoUtana);
+        boolean eltavolitottJeg = jegElotte && !jegUtana;
+        boolean eltavolitottTorottJeg = torottJegElotte && !torottJegUtana;
+
+        int fizetseg = 0;
+        fizetseg += eltavolitottHo * 5;
+        fizetseg += eltavolitottJeg ? 15 : 0;
+        fizetseg += eltavolitottTorottJeg ? 10 : 0;
+
+        if (fizetseg > 0) {
+            this.setPenz(this.getPenz() + fizetseg);
+            System.out.println("Sikeres takarítás! Kapott jutalom: " + fizetseg + " PingCoin. (Összesen: " + this.getPenz() + ")");
+        } else {
+            System.out.println("A takarítás nem hozott változást. Nem jár fizetség!");
+        }
+
+        notifyObservers();
     }
 
     /**
@@ -79,7 +110,9 @@ public class Hokotro extends Jarmu {
      */
     public void ujFejetBegyujt(Kotrofej ujFej) {
         this.birtokoltFejek.add(ujFej);
-        this.aktualisFej = ujFej;
+        if(this.aktualisFej == null){
+            this.aktualisFej = ujFej;
+        }
         System.out.println("-> Uj fej a raktarban. Jelenlegi fejek szama: " + birtokoltFejek.size());
     }
 
@@ -101,28 +134,14 @@ public class Hokotro extends Jarmu {
         this.aktualisFej = ujFej;
     }
 
+
     /**
      * Végrehajtja a jármű mozgását.
      */
+
     @Override
-    public void mozog(Sav hova) {
-        if (this.kimaradoKorok > 0) return;
-
-        this.setAktualisSav(hova);
-
-        if (hova.jeges() || hova.getTorottJeg() && !hova.koves()) {
-            this.csuszkal(hova);
-            if (this.kimaradoKorok > 0) return;
-        }
-
-        Csomopont cel = hova.getUtszakasz().getVegPont();
-        cel.jarmuBefogad(this);
-
-        if (this.kimaradoKorok > 0) return;
-
-        hova.jarmuAthalad();
-        notifyObservers();
-        java.util.Optional.ofNullable(this.aktualisFej).ifPresent(f -> f.hatasKifejtese(hova, this));
+    public void elindul(Sav hova, Csomopont cel) {
+        super.elindul(hova, cel);
     }
 
     /**
@@ -195,5 +214,18 @@ public class Hokotro extends Jarmu {
      */
     public Kotrofej getAktualisFej() {
         return aktualisFej;
+    }
+
+    public void setAktualisFej(Kotrofej kf){
+        aktualisFej = kf;
+    }
+
+    public boolean hasFej(ITargy termek){
+        for(Kotrofej fej : birtokoltFejek){
+            if(fej.getNev().equals(termek.getNev())){
+                return true;
+            }
+        }
+        return false;
     }
 }

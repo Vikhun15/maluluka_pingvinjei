@@ -4,14 +4,14 @@ package Models;
  * A sószóró fej egy olyan hókotróra szerelhető kotrófej, ami sót szór a sávra, így takarítva az utat].
  * Működéséhez elengedhetetlen a só, amelyet a sávra tud szórni.
  */
-public class Soszorofej extends Kotrofej {
+public class SoszoroFej extends Kotrofej {
 
     /**
      * Instantiates a new Soszorofej.
      *
      * @param ar the ar
      */
-    public Soszorofej(int ar) {
+    public SoszoroFej(int ar) {
         super(ar);
         setNev("Sószóró fej");
     }
@@ -33,5 +33,10 @@ public class Soszorofej extends Kotrofej {
             salt.csokkent(1);
             sav.setSozva(true);
         }
+    }
+
+    @Override
+    public ITargy masol(){
+        return new SoszoroFej(this.ar);
     }
 }

@@ -5,8 +5,6 @@ import Controllers.*;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 /**
@@ -363,7 +361,7 @@ public class TestManager {
         System.out.println("[T10] Sószórófej - só csökken, sáv sozva lesz");
         Sav s = new Sav();
         Hokotro h = new Hokotro();
-        h.ujFejetBegyujt(new Soszorofej(80));
+        h.ujFejetBegyujt(new SoszoroFej(80));
         h.getSo().novel(10);
         int elotte = h.getSo().getMennyiseg();
         h.takarit(s);

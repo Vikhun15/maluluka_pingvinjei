@@ -26,6 +26,13 @@ public class So implements ITargy {
         this.mennyiseg = 0;
     }
 
+    @Override
+    public ITargy masol() {
+        So ret = new So(this.ar);
+        ret.mennyiseg = this.mennyiseg;
+        return ret;
+    }
+
     /**
      * A só egységárát adja vissza.
      *

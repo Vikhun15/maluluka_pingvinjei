@@ -83,4 +83,12 @@ public class ZuzottKo implements ITargy {
     public String getNev() {
         return "Zúzott kő";
     }
+
+
+    @Override
+    public ITargy masol() {
+        ZuzottKo ret = new ZuzottKo(this.ar);
+        ret.mennyiseg = this.mennyiseg;
+        return ret;
+    }
 }

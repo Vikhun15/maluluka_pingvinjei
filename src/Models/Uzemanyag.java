@@ -79,5 +79,14 @@ public class Uzemanyag implements ITargy {
     public void setLiterek(int fuel) {
         this.literek = fuel;
     }
+
+
+
+    @Override
+    public ITargy masol() {
+        Uzemanyag ret = new Uzemanyag(this.ar);
+        ret.literek = this.literek;
+        return ret;
+    }
 }
 

@@ -24,9 +24,12 @@ public class HanyoFej extends Kotrofej {
      */
     @Override
     public void hatasKifejtese(Sav sav, Hokotro gep) {
-
-        // ha null akkor nincsen szomszédos sáv
         sav.havatTol(null);
 
+    }
+
+    @Override
+    public ITargy masol(){
+        return new HanyoFej(this.ar);
     }
 }

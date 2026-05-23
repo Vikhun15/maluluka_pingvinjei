@@ -37,4 +37,10 @@ public class KoszoroFej extends Kotrofej {
             sav.setKo(true);
         }
     }
+
+
+    @Override
+    public ITargy masol(){
+        return new KoszoroFej(this.ar);
+    }
 }

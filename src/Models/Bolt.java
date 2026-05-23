@@ -1,13 +1,40 @@
 package Models;
 
+import Observers.IObservable;
+import Observers.IObserver;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * The type Bolt.
  */
-public class Bolt extends Epulet {
+public class Bolt extends Epulet implements IObservable {
+    private transient List<IObserver> observers = new ArrayList<>();
 
+    @Override
+    public void addObserver(IObserver o) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(IObserver o) {
+        if(observers != null){
+            observers.remove(o);
+        }
+    }
+
+    @Override
+    public void notifyObservers() {
+        if(observers != null){
+            for (IObserver o : observers) {
+                o.update();
+            }
+        }
+    }
     /**
      * Instantiates a new Bolt.
      */
@@ -26,9 +53,11 @@ public class Bolt extends Epulet {
      */
     public boolean elad(ITargy termek, Hokotro vevo) {
         if (termek.getAr() <= vevo.getPenz()) {
-            vevo.penzLevon(vevo.getPenz() - termek.getAr());
+            vevo.penzLevon(termek.getAr());
             System.out.println("Sikeres vásárlás! Maradék pénz: " + vevo.getPenz());
-            termek.applyTo(vevo);
+            ITargy termek2 = termek.masol();
+            termek2.applyTo(vevo);
+            notifyObservers();
             return true;
         } else {
             System.out.println("Nincs elég pénzed a vásárláshoz!");
@@ -55,7 +84,7 @@ public class Bolt extends Epulet {
         kinalat.add(new JegtoroFej(120));
         kinalat.add(new KoszoroFej(130));
         kinalat.add(new SoproFej(140));
-        kinalat.add(new Soszorofej(150));
+        kinalat.add(new SoszoroFej(150));
 
         return kinalat;
     }
@@ -69,6 +98,7 @@ public class Bolt extends Epulet {
         if (hokotroAr <= vevo.getPenz()) {
             vevo.penzLevon(hokotroAr);
             System.out.println("Sikeres vásárlás! Maradék pénz: " + vevo.getPenz());
+            notifyObservers();
         } else {
             System.out.println("Nincs elég pénzed a vásárláshoz!");
         }
