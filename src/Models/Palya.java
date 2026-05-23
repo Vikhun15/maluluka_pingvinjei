@@ -1,7 +1,9 @@
-package src.Models;
+package Models;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import static java.lang.Math.abs;
 
 /**
  * The type Palya.
@@ -23,7 +25,8 @@ public class Palya {
         csomopontok = new ArrayList<>();
         utszakaszok = new ArrayList<>();
         jarmuvek = new ArrayList<>();
-        GenerateMap();
+        buildTestMap();
+        //GenerateMap();
     }
 
     /**
@@ -158,5 +161,80 @@ public class Palya {
      */
     public ArrayList<Jarmu> getJarmuvek() {
         return jarmuvek;
+    }
+
+    public Csomopont getCsomopontByCoordinates(int x, int y) {
+        for (Csomopont cs : csomopontok) {
+            if(abs(cs.getX() - x) <= 10 && abs(cs.getY() - y) <= 10){
+                 return cs;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Egy fix, logikus felépítésű tesztpályát generál a grafikus megjelenítéshez.
+     */
+    private void buildTestMap() {
+
+        Csomopont center = new Csomopont();
+        center.setX(350); center.setY(300);
+        center.setEpulet(new Bolt());
+        csomopontok.add(center);
+
+        Csomopont north = new Csomopont();
+        north.setX(350); north.setY(50);
+        north.setEpulet(new Otthon());
+        csomopontok.add(north);
+
+        Csomopont south = new Csomopont();
+        south.setX(350); south.setY(550);
+        south.setEpulet(new Munkahely());
+        csomopontok.add(south);
+
+        Csomopont west = new Csomopont();
+        west.setX(50); west.setY(300);
+        west.setEpulet(new Benzinkut());
+        csomopontok.add(west);
+
+        Csomopont east = new Csomopont();
+        east.setX(650); east.setY(300);
+        csomopontok.add(east);
+
+        Utszakasz utNorth = new Utszakasz(center, north);
+        Sav savN1 = new Sav(); savN1.setUtszakasz(utNorth);
+        Sav savN2 = new Sav(); savN2.setUtszakasz(utNorth);
+        utNorth.getSavok().add(savN1);
+        utNorth.getSavok().add(savN2);
+        utszakaszok.add(utNorth);
+
+        Utszakasz utSouth = new Utszakasz(center, south);
+        Sav savS1 = new Sav(); savS1.setUtszakasz(utSouth);
+        utSouth.getSavok().add(savS1);
+        utszakaszok.add(utSouth);
+
+        Alagut utWest = new Alagut(center, west);
+        Sav savW1 = new Sav(); savW1.setUtszakasz(utWest);
+        utWest.getSavok().add(savW1);
+        utszakaszok.add(utWest);
+
+        Hid utEast = new Hid(center, east);
+        Sav savE1 = new Sav(); savE1.setUtszakasz(utEast);
+        Sav savE2 = new Sav(); savE2.setUtszakasz(utEast);
+        utEast.getSavok().add(savE1);
+        utEast.getSavok().add(savE2);
+        utszakaszok.add(utEast);
+
+        Hokotro hk = new Hokotro(savE1);
+        hk.setAktualisCsomopont(center);
+        hk.setPenz(500);
+        jarmuvek.add(hk);
+        center.jarmuBefogad(hk);
+
+        Auto auto = new Auto(north.getEpulet(), south.getEpulet());
+        auto.setAktualisSav(savN1);
+        auto.setAktualisCsomopont(north);
+        jarmuvek.add(auto);
+        north.jarmuBefogad(auto);
     }
 }

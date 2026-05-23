@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * Egy olyan osztály, amely a gráf alapú úthálózat csúcsait reprezentálja.

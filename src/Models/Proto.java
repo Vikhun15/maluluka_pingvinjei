@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -178,7 +178,7 @@ public class Proto {
 
     private static void kiirSav(String id, Sav s) {
         System.out.println("[Sav: " + id + "]");
-        System.out.println("hoRetegek: " + s.gethoRetegek());
+        System.out.println("hoRetegek: " + s.getHoRetegek());
         System.out.println("kovezve: " + s.koves());
         System.out.println("sozva: " + s.getSozva());
         System.out.println("torottJeg: " + s.getTorottJeg());

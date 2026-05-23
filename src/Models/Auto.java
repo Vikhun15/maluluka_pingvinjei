@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * Az autó feladata az otthona és munkahelye közötti közlekedés.
@@ -25,6 +25,7 @@ public class Auto extends Jarmu {
         super(sav);
         this.otthon = null;
         this.munkahely = null;
+        this.setJarmuTipus("Auto");
     }
 
     /**
@@ -37,6 +38,7 @@ public class Auto extends Jarmu {
         super();
         this.otthon = otthon;
         this.munkahely = munkahely;
+        this.setJarmuTipus("Auto");
     }
 
     public void setAktualisSav(Sav aktualisSav) {
@@ -103,5 +105,6 @@ public class Auto extends Jarmu {
 
         // HALAD
         hova.jarmuAthalad();
+        notifyObservers();
     }
 }

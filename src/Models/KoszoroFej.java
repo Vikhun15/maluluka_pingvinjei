@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * The type Koszoro fej.
@@ -16,6 +16,7 @@ public class KoszoroFej extends Kotrofej {
      */
     public KoszoroFej(int ar) {
         super(ar);
+        setNev("Kőszóró fej");
     }
 
     /**

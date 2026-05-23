@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ public class SoproFej extends Kotrofej {
      */
     public SoproFej(int ar) {
         super(ar);
+        setNev("Söprő fej");
     }
 
     /**
@@ -31,7 +32,7 @@ public class SoproFej extends Kotrofej {
             List<Sav> savok = u.getSavok();
             for (Sav s : savok) {
                 if (!s.equals(sav)) {
-                    sav.havatTol(s);
+                    sav.sopor();
                     return;
                 }
             }

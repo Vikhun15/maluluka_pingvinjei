@@ -1,20 +1,29 @@
-package src.Models;
-import src.Views.*;
-import src.Controllers.*;
+package Models;
 
-/**
- * A Main osztály a program belépési pontja.
- */
+import Controllers.GameController;
+import Models.Palya;
+import Views.GameWindow;
+import javax.swing.SwingUtilities;
+
 public class Main {
-    /**
-     * A program fő metódusa.
-     *
-     * @param args parancssori argumentumok
-     */
     public static void main(String[] args) {
-        Palya palya = new Palya();
-        View view = new View();
-        Controller controller = new Controller();
-        controller.run(palya, view);
+        SwingUtilities.invokeLater(() -> {
+            Palya palya = new Palya();
+
+            GameController controller = new GameController(palya);
+            GameWindow window = new GameWindow(palya, controller);
+
+            controller.setWindow(window);
+            controller.registerObservers();
+            for (Jarmu j : palya.getJarmuvek()) {
+                if (j.getJarmuTipus().equals("Hokotro")) {
+                    Hokotro hk = (Hokotro) j;
+                    controller.setKivalasztottHoktoro(hk);
+                    window.getControlPanel().setHokotro(hk);
+                    break;
+                }
+            }
+            window.setVisible(true);
+        });
     }
 }

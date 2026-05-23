@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A Hókotró által a jégmentesítéshez használt szóróanyagot reprezentálja.
@@ -85,6 +85,10 @@ public class So implements ITargy {
      */
     public void novel(int menny) {
         mennyiseg += menny;
+    }
+
+    public String getNev() {
+        return "Só";
     }
 }
 

@@ -1,10 +1,41 @@
-package src.Models;
+package Models;
+import Observers.IObservable;
+import Observers.IObserver;
+
+import java.util.*;
 
 /**
  * A Sav osztályon keresztül tudnak eljutni a járművek az egyik csomópontból a másikba.
  * Nyilvántartja a hórétegeket, a jeget, és kezeli a forgalom okozta jegesedést.
  */
-public class Sav {
+public class Sav implements IObservable{
+
+    private transient List<IObserver> observers = new ArrayList<>();
+
+    @Override
+    public void addObserver(IObserver o) {
+        if (observers == null) {
+            observers = new ArrayList<>();
+        }
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(IObserver o) {
+        if (observers != null) {
+            observers.remove(o);
+        }
+    }
+
+    @Override
+    public void notifyObservers(){
+        if (observers != null) {
+            for (IObserver o : observers) {
+                o.update();
+            }
+        }
+    }
+
     protected int id;
     protected static int nextId = 0;
 
@@ -17,6 +48,8 @@ public class Sav {
     private Utszakasz szuloUtszakasz;
     private int hoRetegKovon = 0;
     private boolean kovezve = false;
+    private boolean isHid = false;
+    private boolean isAlagut = false;
 
     public Sav() {
         this.id = nextId++;
@@ -31,6 +64,7 @@ public class Sav {
             jeg = true;
             athaladtAutok = 0;
         }
+        notifyObservers();
     }
 
     /**
@@ -55,6 +89,8 @@ public class Sav {
             hoRetegKovon = 0;
             kovezve = false;
         }
+
+        notifyObservers();
     }
 
     /**
@@ -90,6 +126,7 @@ public class Sav {
     public void jegetTor() {
         jeg = false;
         torottJeg = true;
+        notifyObservers();
     }
 
     /**
@@ -108,6 +145,7 @@ public class Sav {
         });
 
         kovezve = false;
+        notifyObservers();
     }
 
     /**
@@ -117,6 +155,7 @@ public class Sav {
         hoRetegek = 0;
         jeg = false;
         torottJeg = false;
+        notifyObservers();
     }
 
     /**
@@ -126,6 +165,7 @@ public class Sav {
         hoRetegek = 0;
         kovezve = false;
         torottJeg = false;
+        notifyObservers();
     }
 
     /**
@@ -145,6 +185,7 @@ public class Sav {
 //* Állapot beállítása */
     public void setSozva(boolean s) {
         this.sozva = s;
+        notifyObservers();
     }
 
     /**
@@ -154,6 +195,13 @@ public class Sav {
      */
     public boolean getSozva() {
         return sozva;
+    }
+    public boolean getKovezve(){
+        return kovezve;
+    }
+
+    public boolean isFeltortJeg() {
+        return torottJeg;
     }
 
     /**
@@ -190,6 +238,7 @@ public class Sav {
      */
     public void setTorottJeg(boolean torottJeg) {
         this.torottJeg = torottJeg;
+        notifyObservers();
     }
 
     /**
@@ -197,7 +246,7 @@ public class Sav {
      *
      * @return the retegek
      */
-    public int gethoRetegek() {
+    public int getHoRetegek() {
         return hoRetegek;
     }
 
@@ -217,5 +266,10 @@ public class Sav {
      */
     public void setKo(boolean kovezve) {
         this.kovezve = kovezve;
+        notifyObservers();
+    }
+
+    public Utszakasz getSzuloUtszakasz() {
+        return szuloUtszakasz;
     }
 }

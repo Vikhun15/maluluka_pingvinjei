@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A Hókotró által a csúszásmentesítéshez használt szóróanyagot reprezentálja.
@@ -78,5 +78,9 @@ public class ZuzottKo implements ITargy {
         if (mennyiseg >= 20) {
             mennyiseg = 20;
         }
+    }
+
+    public String getNev() {
+        return "Zúzott kő";
     }
 }

@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A Sarkanyfej egy speciális Kotrofej, amely egyedi módon, olvasztással,
@@ -13,6 +13,7 @@ public class SarkanyFej extends Kotrofej {
      */
     public SarkanyFej(int ar) {
         super(ar);
+        setNev("Sárkány fej");
     }
 
     /**

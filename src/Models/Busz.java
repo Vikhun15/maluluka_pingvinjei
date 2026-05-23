@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A buszvezető által irányított jármű, célja a végállomások közötti ingázás.
@@ -32,6 +32,7 @@ public class Busz extends Jarmu {
         this.megfordulasokSzama = 0;
         this.kezdoAllomas = kezdo;
         this.vegAllomas = veg;
+        this.setJarmuTipus("Busz");
     }
 
     /**
@@ -40,6 +41,7 @@ public class Busz extends Jarmu {
     public Busz() {
         super();
         this.megfordulasokSzama = 0;
+        this.setJarmuTipus("Busz");
     }
 
     @Override
@@ -65,5 +67,14 @@ public class Busz extends Jarmu {
             this.kezdoAllomas = this.vegAllomas;
             this.vegAllomas = temp;
         }
+        notifyObservers();
+    }
+
+    public Csomopont getKezdoAllomas() {
+        return kezdoAllomas;
+    }
+
+    public Csomopont getVegAllomas() {
+        return vegAllomas;
     }
 }

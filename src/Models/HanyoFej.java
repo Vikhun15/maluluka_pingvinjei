@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A HanyoFej egy Kotrofej, amely a sávon lévő havat és a feltört jeget az út mellé szórja,
@@ -13,6 +13,7 @@ public class HanyoFej extends Kotrofej {
      */
     public HanyoFej(int ar) {
         super(ar);
+        setNev("Hányó fej");
     }
 
     /**

@@ -1,7 +1,7 @@
-package src.Models;
+package Models;
 
-import src.Views.*;
-import src.Controllers.*;
+import Views.*;
+import Controllers.*;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -141,7 +141,7 @@ public class TestManager {
         View view = new View();
         Palya palya = new Palya();
 
-        Controller controller = new Controller();
+        CLIController controller = new CLIController();
         controller.runWithoutBloat(palya, view);
     }
 
@@ -194,7 +194,7 @@ public class TestManager {
         u.hoEsik();
         u.hoEsik();
 
-        assertEqual("3 hóesés után 3 réteg", 3, s.gethoRetegek());
+        assertEqual("3 hóesés után 3 réteg", 3, s.getHoRetegek());
         assertEqual("Még járható", true, s.getJarhato());
 
         for (int i = 0; i < 5; i++) u.hoEsik();
@@ -217,7 +217,7 @@ public class TestManager {
         al.hoEsik();
         al.hoEsik();
 
-        assertEqual("Alagútba nem esik hó", 0, s.gethoRetegek());
+        assertEqual("Alagútba nem esik hó", 0, s.getHoRetegek());
     }
 
     /**
@@ -234,7 +234,7 @@ public class TestManager {
 
         h.hoEsik(); // hídon 2x esik
 
-        assertEqual("1 hóesés = 2 réteg hídon", 2, s.gethoRetegek());
+        assertEqual("1 hóesés = 2 réteg hídon", 2, s.getHoRetegek());
     }
 
     /**
@@ -276,8 +276,8 @@ public class TestManager {
         h.ujFejetBegyujt(sf);
         h.takarit(s1);
 
-        assertEqual("s1 hó = 0 söprés után", 0, s1.gethoRetegek());
-        assertEqual("s2 hó = 1 (átkerült)", 1, s2.gethoRetegek());
+        assertEqual("s1 hó = 0 söprés után", 0, s1.getHoRetegek());
+        assertEqual("s2 hó = 1 (átkerült)", 1, s2.getHoRetegek());
     }
 
     /**
@@ -294,7 +294,7 @@ public class TestManager {
         h.ujFejetBegyujt(new HanyoFej(100));
         h.takarit(s);
 
-        assertEqual("Hányófej után 0 hó", 0, s.gethoRetegek());
+        assertEqual("Hányófej után 0 hó", 0, s.getHoRetegek());
     }
 
     /**
@@ -335,7 +335,7 @@ public class TestManager {
         int elotte = h.getUzemanyag().getLiterek();
         h.takarit(s);
 
-        assertEqual("Hó eltűnt", 0, s.gethoRetegek());
+        assertEqual("Hó eltűnt", 0, s.getHoRetegek());
         assertEqual("Jég eltűnt", false, s.jeges());
         assertEqual("5 liter fogyott", elotte - 5, h.getUzemanyag().getLiterek());
     }
@@ -353,7 +353,7 @@ public class TestManager {
         h.ujFejetBegyujt(new SarkanyFej(200));
         h.takarit(s);
 
-        assertEqual("Hó megmaradt (nem olvasztott)", 1, s.gethoRetegek());
+        assertEqual("Hó megmaradt (nem olvasztott)", 1, s.getHoRetegek());
     }
 
     /**
@@ -475,13 +475,19 @@ public class TestManager {
         jegesSav.jarmuAthalad(); // jeges
 
         Auto a = new Auto(null);
-        Jarmu.rng.setSeed(0); // reseteljük a seed-et pontosan a csúszás elé
+        Jarmu.rng.setSeed(0);
         a.mozog(jegesSav);
 
-        // seed=0 esetén az első nextDouble() ~0.73 — nem csúszik
-        // a viselkedés seed-függő, ezért csak azt ellenőrizzük, hogy a logika lefut
         System.out.println("  [INFO] kimaradoKorok = " + a.kimaradoKorok +
                 " (seed=0 esetén várható: 0 vagy 3)");
-        passed++; // a logika lefutott hiba nélkül
+        passed++;
+    }
+
+    public void setRandomnessEnabled(boolean selected) {
+        if (selected) {
+            Jarmu.rng.setSeed(System.currentTimeMillis());
+        } else {
+            Jarmu.rng.setSeed(0);
+        }
     }
 }

@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * Speciális útszakasz, amely a föld alatt halad, így ide nem esik be a hó.
@@ -14,6 +14,7 @@ public class Alagut extends Utszakasz {
      */
     public Alagut(Csomopont kezdo, Csomopont veg) {
         super(kezdo, veg);
+        setIsAlagut(true);
     }
 
     /**

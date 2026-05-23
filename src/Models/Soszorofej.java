@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A sószóró fej egy olyan hókotróra szerelhető kotrófej, ami sót szór a sávra, így takarítva az utat].
@@ -13,6 +13,7 @@ public class Soszorofej extends Kotrofej {
      */
     public Soszorofej(int ar) {
         super(ar);
+        setNev("Sószóró fej");
     }
 
     /**

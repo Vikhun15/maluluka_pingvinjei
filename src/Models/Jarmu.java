@@ -1,12 +1,43 @@
-package src.Models;
+package Models;
 
 import java.util.Random;
+import Observers.IObserver;
+import Observers.IObservable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Absztrakt ősosztály a pályán mozgó járművekhez.
  * Felelős a mozgásért, a jégen csúszásért és a karambolok kezeléséért.
  */
-public abstract class Jarmu {
+public abstract class Jarmu implements IObservable {
+
+    private transient List<IObserver> observers = new ArrayList<>();
+
+    @Override
+    public void addObserver(IObserver o) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(IObserver o) {
+        if(observers != null){
+            observers.remove(o);
+        }
+    }
+
+    @Override
+    public void notifyObservers() {
+        if(observers != null){
+            for (IObserver o : observers) {
+                o.update();
+            }
+        }
+    }
+
     /**
      * A Jarmu egyedi azonosítója.
      */
@@ -17,10 +48,14 @@ public abstract class Jarmu {
      */
     protected static int nextId = 0;
 
+    private String jarmuTipus;
+
     /**
      * A jármű jelenlegi tartózkodási helye
      */
     protected Sav aktualisSav = null;
+
+    protected Csomopont aktualisCsomopont = null;
 
     /**
      * Eltárolja, hogy a jármű hány körből marad ki.
@@ -31,6 +66,9 @@ public abstract class Jarmu {
      * The constant rng.
      */
     protected static final Random rng = new Random();
+
+    private int x;
+    private int y;
 
     /**
      * Konstruktor, amely beállítja az egyedi azonosítót.
@@ -52,11 +90,13 @@ public abstract class Jarmu {
     }
 
     /**
-     * Absztrakt metódus a jármű helyváltoztatására.
+     * Metódus a jármű helyváltoztatására.
      *
      * @param hova A cél sáv, ahová a jármű mozog.
      */
-    public abstract void mozog(Sav hova);
+    public void mozog(Sav hova){
+        notifyObservers();
+    }
 
     /**
      * A jármű jégpáncélon történő megcsúszását szimulálja.
@@ -119,4 +159,40 @@ public abstract class Jarmu {
     public void setAktualisSav(Sav ujSav) {
         this.aktualisSav = ujSav;
     }
+
+    public Csomopont getAktualisCsomopont() {
+        return aktualisCsomopont;
+    }
+    public void setAktualisCsomopont(Csomopont aktualisCsomopont) {
+        this.aktualisCsomopont = aktualisCsomopont;
+    }
+
+    public int getKimaradoKorok() {
+        return kimaradoKorok;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public String getJarmuTipus(){
+        return jarmuTipus;
+    }
+
+    public void setJarmuTipus(String jarmuTipus){
+        this.jarmuTipus = jarmuTipus;
+    }
+
 }

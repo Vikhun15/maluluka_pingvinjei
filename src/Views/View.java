@@ -1,5 +1,5 @@
-package src.Views;
-import src.Models.*;
+package Views;
+import Models.*;
 
 /**
  * A View osztály a játék grafikus felhasználói felületét kezeli CLI-ben.
@@ -24,7 +24,7 @@ public class View {
         for (Utszakasz ut : palya.getUtszakaszok()) {
             System.out.println("  ID: " + ut.getId() + ", Kezdő: " + ut.getKezdoPont().getId() + ", Vég: " + ut.getVegPont().getId() + ", Típus: " + ut.getClass().getSimpleName() + ", Sávok: " + ut.getSavok().size());
             for (Sav s : ut.getSavok()) {
-                System.out.println("    Sáv ID: " + s.getId() + ", Hó: " + s.gethoRetegek() + ", Jeges: " + s.jeges() + ", Sózva: " + s.getSozva());
+                System.out.println("    Sáv ID: " + s.getId() + ", Hó: " + s.getHoRetegek() + ", Jeges: " + s.jeges() + ", Sózva: " + s.getSozva());
             }
         }
 

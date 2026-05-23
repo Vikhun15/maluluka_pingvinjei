@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A Jegtorofej egy speciális Kotrofej, amely egyedi módon interaktál a sávokkal, a rajtuk
@@ -13,6 +13,7 @@ public class JegtoroFej extends Kotrofej {
      */
     public JegtoroFej(int ar) {
         super(ar);
+        setNev("Jégtörő fej");
     }
 
     /**

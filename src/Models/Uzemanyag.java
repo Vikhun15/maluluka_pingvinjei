@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A Hókotró Sárkányfejének működéséhez szükséges üzemanyagot reprezentálja.
@@ -70,6 +70,14 @@ public class Uzemanyag implements ITargy {
      */
     public void tankol(int menny) {
         this.literek += menny;
+    }
+
+    public String getNev() {
+        return "Üzemanyag";
+    }
+
+    public void setLiterek(int fuel) {
+        this.literek = fuel;
     }
 }
 

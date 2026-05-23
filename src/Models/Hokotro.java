@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 import java.util.ArrayList;
 
@@ -46,6 +46,7 @@ public class Hokotro extends Jarmu {
         this.uzemanyag = new Uzemanyag(20);
         this.birtokoltFejek = new ArrayList<>();
         this.zuzottKo = new ZuzottKo(10);
+        this.setJarmuTipus("Hokotro");
     }
 
     /**
@@ -58,6 +59,7 @@ public class Hokotro extends Jarmu {
         this.uzemanyag = new Uzemanyag(20);
         this.birtokoltFejek = new ArrayList<>();
         this.zuzottKo = new ZuzottKo(10);
+        this.setJarmuTipus("Hokotro");
     }
 
     /**
@@ -119,6 +121,7 @@ public class Hokotro extends Jarmu {
         if (this.kimaradoKorok > 0) return;
 
         hova.jarmuAthalad();
+        notifyObservers();
         java.util.Optional.ofNullable(this.aktualisFej).ifPresent(f -> f.hatasKifejtese(hova, this));
     }
 

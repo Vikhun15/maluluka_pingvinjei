@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * A Kotrofej egy absztrakt ősosztály, amiből leszármazik az összes kotrófej.
@@ -15,6 +15,8 @@ public abstract class Kotrofej implements ITargy {
      * Meghatározza a Kotrófej árát.
      */
     protected int ar;
+
+    private String nev;
 
     /**
      * The constant nextId.
@@ -57,5 +59,12 @@ public abstract class Kotrofej implements ITargy {
     @Override
     public int getAr() {
         return this.ar;
+    }
+
+    public String getNev() {
+        return this.nev;
+    }
+    public void setNev(String nev) {
+        this.nev = nev;
     }
 }

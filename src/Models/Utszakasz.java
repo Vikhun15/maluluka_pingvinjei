@@ -1,12 +1,41 @@
-package src.Models;
+package Models;
 
 import java.util.ArrayList;
 import java.util.List;
+import Observers.IObserver;
+import Observers.IObservable;
 
 /**
  * Két csomópontot összekötő alapegység. Fő feladata a sávok összefogása.
  */
-public class Utszakasz {
+public class Utszakasz implements IObservable {
+    private transient List<IObserver> observers = new ArrayList<>();
+
+    @Override
+    public void addObserver(IObserver o) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(IObserver o) {
+        if(observers != null){
+            observers.remove(o);
+        }
+    }
+
+    @Override
+    public void notifyObservers() {
+        if(observers != null){
+            for (IObserver o : observers) {
+                o.update();
+            }
+        }
+    }
+
+
     /**
      * Az útszakasz egyedi azonosítója.
      */
@@ -31,6 +60,9 @@ public class Utszakasz {
      * Az útszakasz végső csomópontja.
      */
     protected Csomopont vegCsomopont;
+
+    private boolean isAlagut = false;
+    private boolean isHid = false;
 
     /**
      * Instantiates a new Utszakasz.
@@ -60,6 +92,7 @@ public class Utszakasz {
         for (Sav s : savok) {
             s.hoEsik();
         }
+        notifyObservers();
     }
 
     /**
@@ -105,5 +138,21 @@ public class Utszakasz {
      */
     public Csomopont getVegPont() {
         return this.vegCsomopont;
+    }
+
+    public boolean getIsHid(){
+        return isHid;
+    }
+
+    public void setIsHid(boolean isHid){
+        this.isHid = isHid;
+    }
+
+    public boolean getIsAlagut(){
+        return isAlagut;
+    }
+
+    public void setIsAlagut(boolean isAlagut){
+        this.isAlagut = isAlagut;
     }
 }

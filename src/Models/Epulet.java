@@ -1,4 +1,4 @@
-package src.Models;
+package Models;
 
 /**
  * Speciális csomópont, amely konkrét funkcióval bíró építményt jelöl a térképen.
@@ -28,5 +28,9 @@ public abstract class Epulet {
      */
     public int getId() {
         return this.id;
+    }
+
+    public Bolt asBolt() {
+        return null;
     }
 }
