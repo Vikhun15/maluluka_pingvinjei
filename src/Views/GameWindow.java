@@ -29,8 +29,14 @@ public class GameWindow extends JFrame {
         this.canvas = new GameCanvas(palya);
         this.controlPanel = new VehicleControlPanel(controller);
         this.statusBar = new StatusBar();
+        JScrollPane scrollPane = new JScrollPane(canvas);
 
-        mainPanel.add(canvas, BorderLayout.CENTER);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
         mainPanel.add(controlPanel, BorderLayout.EAST);
         mainPanel.add(statusBar, BorderLayout.SOUTH);
 

@@ -44,6 +44,14 @@ public class Busz extends Jarmu {
         this.setJarmuTipus("Busz");
     }
 
+    public Busz(Csomopont kezdo, Csomopont veg) {
+        super();
+        this.megfordulasokSzama = 0;
+        this.kezdoAllomas = kezdo;
+        this.vegAllomas = veg;
+        this.setJarmuTipus("Busz");
+    }
+
     @Override
     public void mozog(Sav hova) {
         if (this.kimaradoKorok > 0) return;

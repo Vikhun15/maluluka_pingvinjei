@@ -23,6 +23,7 @@ public class GameCanvas extends JPanel implements IObserver {
         this.setBackground(Color.decode("#4CAF50"));
         this.setBorder(BorderFactory.createLineBorder(Color.decode("#388E3C"), 2));
         ToolTipManager.sharedInstance().registerComponent(this);
+        this.setPreferredSize(new Dimension(2000, 2000));
     }
 
     public void setSelectedHokotro(Hokotro hk) {

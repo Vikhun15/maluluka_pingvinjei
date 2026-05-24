@@ -1,0 +1,14 @@
+[CSOMOPONTOK]
+0;350;300;Bolt
+1;350;50;Otthon
+2;350;550;Munkahely
+3;50;300;Benzinkut
+4;650;300;Csomopont
+[SZAKASZOK]
+0;0;1;2;Utszakasz
+1;0;2;1;Utszakasz
+2;0;3;1;Alagut
+3;0;4;2;Hid
+[JARMUVEK]
+Hokotro;0;4;-1;0;0;10;500
+Auto;1;1;1;2
