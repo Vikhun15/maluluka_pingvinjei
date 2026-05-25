@@ -15,15 +15,13 @@ public class NodeRenderer {
 
         if (cs.getEpulet() != null) {
             String epuletTipus = cs.getEpulet().getClass().getSimpleName();
-            if (epuletTipus.equals("Otthon")) {
-                nodeColor = Color.decode("#E30707");
-            } else if (epuletTipus.equals("Munkahely")) {
-                nodeColor = Color.decode("#0787E3");
-            } else if (epuletTipus.equals("Bolt")) {
-                nodeColor = Color.decode("#946213");
-            } else if (epuletTipus.equals("Benzinkut")) {
-                nodeColor = Color.decode("#1F5C06");
-            }
+            nodeColor = switch (epuletTipus) {
+                case "Otthon" -> Color.decode("#E30707");
+                case "Munkahely" -> Color.decode("#0787E3");
+                case "Bolt" -> Color.decode("#946213");
+                case "Benzinkut" -> Color.decode("#1F5C06");
+                default -> nodeColor;
+            };
         }
 
         g2d.setColor(nodeColor);

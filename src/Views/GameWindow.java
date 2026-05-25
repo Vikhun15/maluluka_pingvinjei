@@ -9,10 +9,10 @@ import java.io.File;
 import java.util.Enumeration;
 
 public class GameWindow extends JFrame {
-    private GameCanvas canvas;
-    private VehicleControlPanel controlPanel;
-    private StatusBar statusBar;
-    private GameController controller;
+    private final GameCanvas canvas;
+    private final VehicleControlPanel controlPanel;
+    private final StatusBar statusBar;
+    private final GameController controller;
 
     public GameWindow(Palya palya, GameController controller) {
         super("Hókotró Szimulátor 2026");
@@ -78,38 +78,9 @@ public class GameWindow extends JFrame {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-        JMenu fileMenu = new JMenu("Fájl");
-        JMenuItem loadItem = new JMenuItem("Pálya betöltése...");
-        loadItem.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Szimuláció mentés (*.dat)", "dat"));
-            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                controller.handleLoad(fileChooser.getSelectedFile());
-            }
-        });
-        JMenuItem saveItem = getSaveItem();
-        JMenuItem exitItem = new JMenuItem("Kilépés");
-        exitItem.addActionListener(e -> System.exit(0));
-        fileMenu.add(loadItem);
-        fileMenu.add(saveItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitItem);
+        JMenu fileMenu = getFileMenu();
 
-        JMenu simMenu = new JMenu("Szimuláció");
-        JMenuItem step1Item = new JMenuItem("Léptetés 1x (Space)");
-        step1Item.addActionListener(e -> controller.handleStep());
-
-        JMenuItem step5Item = new JMenuItem("Léptetés 5x (Ctrl+Space)");
-        step5Item.addActionListener(e -> {
-            for (int i = 0; i < 5; i++) controller.handleStep();
-        });
-
-        JCheckBoxMenuItem randomItem = new JCheckBoxMenuItem("Véletlenszerűség BE/KI (R)");
-
-        simMenu.add(step1Item);
-        simMenu.add(step5Item);
-        simMenu.addSeparator();
-        simMenu.add(randomItem);
+        JMenu simMenu = getSimMenu();
 
         JMenu palyaMenu = new JMenu("Pálya");
         palyaMenu.add(new JMenuItem("Csomópont hozzáadása"));
@@ -125,10 +96,49 @@ public class GameWindow extends JFrame {
         this.setJMenuBar(menuBar);
     }
 
+    private JMenu getSimMenu() {
+        JMenu simMenu = new JMenu("Szimuláció");
+        JMenuItem step1Item = new JMenuItem("Léptetés 1x (Space)");
+        step1Item.addActionListener(e -> controller.handleStep());
+
+        JMenuItem step5Item = new JMenuItem("Léptetés 5x (Ctrl+Space)");
+        step5Item.addActionListener(e -> {
+            for (int i = 0; i < 5; i++) controller.handleStep();
+        });
+
+        JCheckBoxMenuItem randomItem = new JCheckBoxMenuItem("Véletlenszerűség BE/KI (R)");
+
+        simMenu.add(step1Item);
+        simMenu.add(step5Item);
+        simMenu.addSeparator();
+        simMenu.add(randomItem);
+        return simMenu;
+    }
+
+    private JMenu getFileMenu() {
+        JMenu fileMenu = new JMenu("Fájl");
+        JMenuItem loadItem = new JMenuItem("Pálya betöltése...");
+        loadItem.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser("./");
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Szimuláció mentés (*.dat)", "dat"));
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                controller.handleLoad(fileChooser.getSelectedFile());
+            }
+        });
+        JMenuItem saveItem = getSaveItem();
+        JMenuItem exitItem = new JMenuItem("Kilépés");
+        exitItem.addActionListener(e -> System.exit(0));
+        fileMenu.add(loadItem);
+        fileMenu.add(saveItem);
+        fileMenu.addSeparator();
+        fileMenu.add(exitItem);
+        return fileMenu;
+    }
+
     private JMenuItem getSaveItem() {
         JMenuItem saveItem = new JMenuItem("Állapot mentése...");
         saveItem.addActionListener(e -> {
-            JFileChooser fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser("./");
             fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Szimuláció mentés (*.dat)", "dat"));
             fileChooser.setSelectedFile(new File("savegame.dat"));
 

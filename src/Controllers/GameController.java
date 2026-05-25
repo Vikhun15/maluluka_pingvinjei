@@ -8,9 +8,11 @@ import Views.ShopDialog;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 
-public class GameController implements KeyListener {
+public class GameController implements KeyListener, MouseListener {
 
     private final Palya palya;
     private GameWindow window;
@@ -28,6 +30,9 @@ public class GameController implements KeyListener {
 
     public void setWindow(GameWindow window) {
         this.window = window;
+        if (this.window != null && this.window.getCanvas() != null) {
+            this.window.getCanvas().addMouseListener(this);
+        }
     }
 
     public void setKivalasztottHoktoro(Hokotro hokotro) {
@@ -139,7 +144,7 @@ public class GameController implements KeyListener {
         passzoldABotot();
     }
 
-    public void handeTakarit() {
+    public void handleTakarit() {
         if (kivalasztottHokotro != null) {
             kivalasztottHokotro.takarit(kivalasztottHokotro.getAktualisSav());
             if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Takarítás elvégezve.");
@@ -147,10 +152,54 @@ public class GameController implements KeyListener {
         }
     }
 
+    /**
+     * Megkeresi a két csomópontot összekötő útszakasz első sávját.
+     * Visszatérési értéke null, ha a két csomópont nem közvetlen szomszédja egymásnak.
+     */
+    private Sav findSavBetween(Csomopont a, Csomopont b) {
+        if (a == null || b == null) return null;
+
+        for (Utszakasz u : palya.getUtszakaszok()) {
+            if ((u.getKezdoPont() == a && u.getVegPont() == b) ||
+                    (u.getVegPont() == a && u.getKezdoPont() == b)) {
+
+                if (!u.getSavok().isEmpty()) {
+                    return getBestEmptySav(u);
+                }
+            }
+        }
+        return null;
+    }
+
     public void handleMapClick(int x, int y) {
         Csomopont clickedNode = palya.getCsomopontByCoordinates(x, y);
+
         if (clickedNode != null) {
-            if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Kattintva: " + clickedNode.getId());
+            if (window != null) {
+                window.getStatusBar().setStatus(jelenlegiKor, "Kattintva: " + clickedNode.getId());
+            }
+
+            if (kivalasztottHokotro != null) {
+                Csomopont jelenlegi = kivalasztottHokotro.getAktualisCsomopont();
+
+                if (jelenlegi != null && jelenlegi != clickedNode) {
+
+                    Sav celSav = findSavBetween(jelenlegi, clickedNode);
+
+                    if (celSav != null) {
+                        kivalasztottHokotro.elindul(celSav, clickedNode);
+                        passzoldABotot();
+                    } else {
+                        if (window != null) {
+                            window.getStatusBar().setStatus(jelenlegiKor, "Nem lehet oda lépni, nincs közvetlen út!");
+                        }
+                    }
+                } else if (jelenlegi == null) {
+                    if (window != null) {
+                        window.getStatusBar().setStatus(jelenlegiKor, "A jármű úton van! Lépj a Space gombbal a megérkezéshez.");
+                    }
+                }
+            }
         }
     }
 
@@ -246,6 +295,22 @@ public class GameController implements KeyListener {
                 window.getStatusBar().setStatus(jelenlegiKor, "Játék betöltve.");
             }
         }
+
+        Hokotro elsoHokotro = palya.getJarmuvek().stream()
+                .filter(j -> j.getJarmuTipus().equals("Hokotro"))
+                .map(j -> (Hokotro) j)
+                .findFirst()
+                .orElse(null);
+
+        if (elsoHokotro != null) {
+            setKivalasztottHoktoro(elsoHokotro);
+
+            if (window != null) {
+                window.getControlPanel().setHokotro(elsoHokotro);
+            }
+            elsoHokotro.notifyObservers();
+        }
+
     }
 
     /**
@@ -264,25 +329,34 @@ public class GameController implements KeyListener {
             }
 
             if (celPont != null && !u.getSavok().isEmpty()) {
-                int dx = celPont.getX() - aktualisPont.getX();
-                int dy = celPont.getY() - aktualisPont.getY();
-
-                boolean joIrany = false;
-
-                switch (irany) {
-                    case "fel":   joIrany = (dy < 0) && (Math.abs(dy) > Math.abs(dx)); break;
-                    case "le":    joIrany = (dy > 0) && (Math.abs(dy) > Math.abs(dx)); break;
-                    case "bal":   joIrany = (dx < 0) && (Math.abs(dx) > Math.abs(dy)); break;
-                    case "jobb":  joIrany = (dx > 0) && (Math.abs(dx) > Math.abs(dy)); break;
-                }
+                boolean joIrany = isJoIrany(aktualisPont, irany, celPont);
 
                 if (joIrany) {
-                    return u.getSavok().get(0);
+                    return getBestEmptySav(u);
                 }
             }
         }
         return null;
     }
+
+    private static boolean isJoIrany(Csomopont aktualisPont, String irany, Csomopont celPont) {
+        int dx = celPont.getX() - aktualisPont.getX();
+        int dy = celPont.getY() - aktualisPont.getY();
+
+        boolean joIrany = false;
+
+        boolean a = Math.abs(dy) > Math.abs(dx);
+        boolean b = Math.abs(dx) > Math.abs(dy);
+        joIrany = switch (irany) {
+            case "fel" -> (dy < 0) && a;
+            case "le" -> (dy > 0) && a;
+            case "bal" -> (dx < 0) && b;
+            case "jobb" -> (dx > 0) && b;
+            default -> false;
+        };
+        return joIrany;
+    }
+
     @Override
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
@@ -323,6 +397,31 @@ public class GameController implements KeyListener {
         }
     }
 
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        handleMapClick(e.getX(), e.getY());
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // Nem használjuk, de kötelező implementálni a MouseListener miatt
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // Nem használjuk, de kötelező implementálni a MouseListener miatt
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // Nem használjuk, de kötelező implementálni a MouseListener miatt
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // Nem használjuk, de kötelező implementálni a MouseListener miatt
+    }
+
     /**
      * BFS (Szélességi Keresés) algoritmus a legrövidebb útvonal megtalálására.
      * Visszaadja azt az 1 db sávot, amelyre az autónak lépnie kell, hogy a cél felé haladjon.
@@ -355,7 +454,7 @@ public class GameController implements KeyListener {
 
                 if (szomszed != null && !parentMap.containsKey(szomszed) && !ut.getSavok().isEmpty()) {
                     parentMap.put(szomszed, current);
-                    edgeToParentMap.put(szomszed, ut.getSavok().get(0));
+                    edgeToParentMap.put(szomszed, getBestEmptySav(ut));
                     queue.add(szomszed);
                 }
             }
@@ -374,6 +473,29 @@ public class GameController implements KeyListener {
         }
 
         return firstSav;
+    }
+
+    /**
+     * Kiválasztja a legjobb sávot egy útszakaszon.
+     * Visszaadja az első olyan sávot, amin épp nem tartózkodik jármű.
+     * Ha minden sáv foglalt, alapértelmezetten visszaadja a legelsőt.
+     */
+    private Sav getBestEmptySav(Utszakasz ut) {
+        if (ut.getSavok().isEmpty()) return null;
+
+        for (Sav sav : ut.getSavok()) {
+            boolean foglalt = false;
+            for (Jarmu j : palya.getJarmuvek()) {
+                if (j.getAktualisSav() == sav) {
+                    foglalt = true;
+                    break;
+                }
+            }
+            if (!foglalt) {
+                return sav;
+            }
+        }
+        return ut.getSavok().get(0);
     }
 
     @Override

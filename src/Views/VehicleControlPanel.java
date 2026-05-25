@@ -12,12 +12,12 @@ import java.awt.*;
 
 public class VehicleControlPanel extends JPanel implements IObserver {
     private Hokotro selectedHokotro;
-    private JLabel idLabel = new JLabel("ID: -");
-    private JLabel penzLabel = new JLabel("Pénz: 0 PingCoin");
-    private JLabel soLabel = new JLabel("Sókészlet: 0 kg");
-    private JLabel biokerozinLabel = new JLabel("Biokerozin: 0 liter");
-    private JLabel zuzottKoLabel = new JLabel("Zúzott kő: 0 kg");
-    private JLabel kotrofejLabel = new JLabel("Aktuális kotrófej: Nincs");
+    private final JLabel idLabel = new JLabel("ID: -");
+    private final JLabel penzLabel = new JLabel("Pénz: 0 PingCoin");
+    private final JLabel soLabel = new JLabel("Sókészlet: 0 kg");
+    private final JLabel biokerozinLabel = new JLabel("Biokerozin: 0 liter");
+    private final JLabel zuzottKoLabel = new JLabel("Zúzott kő: 0 kg");
+    private final JLabel kotrofejLabel = new JLabel("Aktuális kotrófej: Nincs");
 
     public VehicleControlPanel(GameController controller) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -76,7 +76,7 @@ public class VehicleControlPanel extends JPanel implements IObserver {
         takaritButton.setBackground(Color.decode("#2196F3"));
         takaritButton.addActionListener(e ->{
             if(selectedHokotro != null){
-                controller.handeTakarit();
+                controller.handleTakarit();
             }
         });
 

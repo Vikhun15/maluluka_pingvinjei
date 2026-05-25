@@ -5,7 +5,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 public class StatusBar extends JPanel {
-    private JLabel statusLabel;
+    private final JLabel statusLabel;
 
     public StatusBar() {
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));

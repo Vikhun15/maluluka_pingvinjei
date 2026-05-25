@@ -28,6 +28,7 @@ public class GameStateManager {
             }
 
             writer.println("[JARMUVEK]");
+
             for (Jarmu j : palya.getJarmuvek()) {
                 String className = j.getClass().getSimpleName();
 
@@ -38,27 +39,32 @@ public class GameStateManager {
                     pozID = j.getAktualisSav().getUtszakasz().id;
                 }
 
-                if (j.getJarmuTipus().equals("Hokotro")) {
-                    Hokotro h = (Hokotro) j;
-                    int kotrofejID = Optional.ofNullable(h.getAktualisFej()).map(f -> f.id).orElse(-1);
-                    int fuel = h.getUzemanyag().getLiterek();
-                    int salt = h.getSo().getMennyiseg();
-                    int zuzottKo = h.getZuzottKo().getMennyiseg();
-                    int penz = h.getPenz();
-                    writer.println(className + ";" + j.id + ";" + pozID + ";" + kotrofejID + ";"
-                            + fuel + ";" + salt + ";" + zuzottKo + ";" + penz);
+                int csomopontID = (j.getAktualisCsomopont() != null) ? j.getAktualisCsomopont().id : -1;
+                int utszakaszID = (j.getAktualisSav() != null) ? j.getAktualisSav().getUtszakasz().id : -1;
 
-                } else if (j.getJarmuTipus().equals("Auto")) {
-                    Auto a = (Auto) j;
-                    int otthonId = Optional.ofNullable(a.getOtthon()).map(e -> e.id).orElse(-1);
-                    int munkahelyId = Optional.ofNullable(a.getMunkahely()).map(e -> e.id).orElse(-1);
-                    writer.println(className + ";" + j.id + ";" + pozID + ";" + otthonId + ";" + munkahelyId);
-
-                } else if (j.getJarmuTipus().equals("Busz")) {
-                    Busz b = (Busz) j;
-                    int kezdoId = Optional.ofNullable(b.getKezdoAllomas()).map(c -> c.id).orElse(-1);
-                    int vegId = Optional.ofNullable(b.getVegAllomas()).map(c -> c.id).orElse(-1);
-                    writer.println(className + ";" + j.id + ";" + pozID + ";" + kezdoId + ";" + vegId);
+                switch (j.getJarmuTipus()) {
+                    case "Hokotro" -> {
+                        Hokotro h = (Hokotro) j;
+                        int kotrofejID = Optional.ofNullable(h.getAktualisFej()).map(f -> f.id).orElse(-1);
+                        int fuel = h.getUzemanyag().getLiterek();
+                        int salt = h.getSo().getMennyiseg();
+                        int zuzottKo = h.getZuzottKo().getMennyiseg();
+                        int penz = h.getPenz();
+                        writer.println(className + ";" + j.id + ";" + csomopontID + ";" + utszakaszID + ";" + kotrofejID + ";"
+                                + fuel + ";" + salt + ";" + zuzottKo + ";" + penz);
+                    }
+                    case "Auto" -> {
+                        Auto a = (Auto) j;
+                        int otthonId = Optional.ofNullable(a.getOtthon()).map(e -> e.id).orElse(-1);
+                        int munkahelyId = Optional.ofNullable(a.getMunkahely()).map(e -> e.id).orElse(-1);
+                        writer.println(className + ";" + j.id + ";" + csomopontID + ";" + utszakaszID + ";" + otthonId + ";" + munkahelyId);
+                    }
+                    case "Busz" -> {
+                        Busz b = (Busz) j;
+                        int kezdoId = Optional.ofNullable(b.getKezdoAllomas()).map(c -> c.id).orElse(-1);
+                        int vegId = Optional.ofNullable(b.getVegAllomas()).map(c -> c.id).orElse(-1);
+                        writer.println(className + ";" + j.id + ";" + csomopontID + ";" + utszakaszID + ";" + kezdoId + ";" + vegId);
+                    }
                 }
             }
         } catch (FileNotFoundException e) {
@@ -135,45 +141,43 @@ public class GameStateManager {
                     case "[JARMUVEK]":
                         String jarmuTipus = parts[0];
                         int jarmuId = Integer.parseInt(parts[1]);
-                        int pozId = Integer.parseInt(parts[2]);
+                        int csomopontId = Integer.parseInt(parts[2]);
+                        int utszakaszId = Integer.parseInt(parts[3]);
 
                         Jarmu ujJarmu = null;
 
-                        if (jarmuTipus.equals("Hokotro")) {
-                            Hokotro h = new Hokotro(null);
-                            h.getUzemanyag().tankol(Integer.parseInt(parts[4]));
-                            h.getSo().setMennyiseg(Integer.parseInt(parts[5]));
-                            h.getZuzottKo().setMennyiseg(Integer.parseInt(parts[6]));
-                            h.setPenz(Integer.parseInt(parts[7]));
-                            ujJarmu = h;
-
-                        } else if (jarmuTipus.equals("Auto")) {
-                            int otthonId = Integer.parseInt(parts[3]);
-                            int munkahelyId = Integer.parseInt(parts[4]);
-
-                            Epulet otthon = csomopontMap.containsKey(otthonId) ? csomopontMap.get(otthonId).getEpulet() : null;
-                            Epulet munkahely = csomopontMap.containsKey(munkahelyId) ? csomopontMap.get(munkahelyId).getEpulet() : null;
-
-                            ujJarmu = new Auto(otthon, munkahely);
-
-                        } else if (jarmuTipus.equals("Busz")) {
-                            int kezdoId = Integer.parseInt(parts[3]);
-                            int vegId = Integer.parseInt(parts[4]);
-                            Csomopont kAllomas = csomopontMap.get(kezdoId);
-                            Csomopont vAllomas = csomopontMap.get(vegId);
-
-                            ujJarmu = new Busz(kAllomas, vAllomas);
+                        switch (jarmuTipus) {
+                            case "Hokotro" -> {
+                                Hokotro h = new Hokotro(null);
+                                h.getUzemanyag().tankol(Integer.parseInt(parts[5]));
+                                h.getSo().setMennyiseg(Integer.parseInt(parts[6]));
+                                h.getZuzottKo().setMennyiseg(Integer.parseInt(parts[7]));
+                                h.setPenz(Integer.parseInt(parts[8]));
+                                ujJarmu = h;
+                            }
+                            case "Auto" -> {
+                                int otthonId = Integer.parseInt(parts[4]);
+                                int munkahelyId = Integer.parseInt(parts[5]);
+                                Epulet otthon = csomopontMap.get(otthonId) != null ? csomopontMap.get(otthonId).getEpulet() : null;
+                                Epulet munkahely = csomopontMap.get(munkahelyId) != null ? csomopontMap.get(munkahelyId).getEpulet() : null;
+                                ujJarmu = new Auto(otthon, munkahely);
+                            }
+                            case "Busz" -> {
+                                int kezdoId = Integer.parseInt(parts[4]);
+                                int vegId = Integer.parseInt(parts[5]);
+                                ujJarmu = new Busz(csomopontMap.get(kezdoId), csomopontMap.get(vegId));
+                            }
                         }
 
                         if (ujJarmu != null) {
                             ujJarmu.id = jarmuId;
 
-                            if (csomopontMap.containsKey(pozId)) {
-                                Csomopont csp = csomopontMap.get(pozId);
+                            if (csomopontId != -1) {
+                                Csomopont csp = csomopontMap.get(csomopontId);
                                 ujJarmu.setAktualisCsomopont(csp);
                                 csp.jarmuBefogad(ujJarmu);
-                            } else if (utszakaszMap.containsKey(pozId)) {
-                                Utszakasz u = utszakaszMap.get(pozId);
+                            } else if (utszakaszId != -1) {
+                                Utszakasz u = utszakaszMap.get(utszakaszId);
                                 if (!u.getSavok().isEmpty()) {
                                     ujJarmu.setAktualisSav(u.getSavok().get(0));
                                     ujJarmu.elindul(u.getSavok().get(0), u.getVegPont());
@@ -181,6 +185,8 @@ public class GameStateManager {
                             }
                             jarmuvek.add(ujJarmu);
                         }
+
+
                         break;
                 }
             }

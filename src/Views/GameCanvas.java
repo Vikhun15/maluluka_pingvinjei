@@ -5,14 +5,17 @@ import javax.swing.*;
 import java.awt.*;
 import Observers.IObserver;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class GameCanvas extends JPanel implements IObserver {
-    private Palya palya;
-    private RoadRenderer roadRenderer;
-    private NodeRenderer nodeRenderer;
-    private VehicleRenderer vehicleRenderer;
+    private final Palya palya;
+    private final RoadRenderer roadRenderer;
+    private final NodeRenderer nodeRenderer;
+    private final VehicleRenderer vehicleRenderer;
 
     private Hokotro selectedHokotro;
+
+    private Csomopont hoveredCsomopont = null;
 
     public GameCanvas(Palya palya) {
         this.palya = palya;
@@ -20,10 +23,52 @@ public class GameCanvas extends JPanel implements IObserver {
         this.nodeRenderer = new NodeRenderer();
         this.vehicleRenderer = new VehicleRenderer();
 
-        this.setBackground(Color.decode("#4CAF50"));
+        this.setBackground(Color.decode("#42413f"));
         this.setBorder(BorderFactory.createLineBorder(Color.decode("#388E3C"), 2));
         ToolTipManager.sharedInstance().registerComponent(this);
         this.setPreferredSize(new Dimension(2000, 2000));
+
+        this.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                checkHover(e.getX(), e.getY());
+            }
+        });
+    }
+
+    /**
+     * Megnézi, hogy az egér egy csomópont felett van-e, és ha változás van, újrarajzolja a vásznat.
+     */
+    private void checkHover(int mouseX, int mouseY) {
+        Csomopont newHover = null;
+        int hitbox = 20;
+
+        for (Csomopont cs : palya.getCsomopontok()) {
+            if (Math.abs(mouseX - cs.getX()) <= hitbox && Math.abs(mouseY - cs.getY()) <= hitbox) {
+                newHover = cs;
+                break;
+            }
+        }
+
+        if (this.hoveredCsomopont != newHover) {
+            this.hoveredCsomopont = newHover;
+            this.repaint();
+        }
+    }
+
+    /**
+     * Ellenőrzi, hogy a cél csomópont elérhető-e a jelenlegiből (van-e közvetlen út).
+     */
+    private boolean isReachable(Csomopont start, Csomopont target) {
+        if (start == null || target == null || start == target) return false;
+
+        for (Utszakasz u : palya.getUtszakaszok()) {
+            if ((u.getKezdoPont() == start && u.getVegPont() == target) ||
+                    (u.getVegPont() == start && u.getKezdoPont() == target)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setSelectedHokotro(Hokotro hk) {
@@ -51,6 +96,31 @@ public class GameCanvas extends JPanel implements IObserver {
         }
 
         for (Csomopont cs : palya.getCsomopontok()) {
+            if(selectedHokotro != null){
+
+                Csomopont jelenlegi = selectedHokotro.getAktualisCsomopont();
+                if (cs == hoveredCsomopont) {
+                    if (jelenlegi != cs) {
+                        boolean elerheto = isReachable(jelenlegi, cs);
+
+                        if (elerheto) {
+                            g2d.setColor(new Color(76, 175, 80, 180));
+                        } else {
+                            g2d.setColor(new Color(244, 67, 54, 180));
+                        }
+
+                        int glowSize = 40;
+                        g2d.fillOval(cs.getX() - glowSize/2, cs.getY() - glowSize/2, glowSize, glowSize);
+                    }
+                }
+                else if(cs == jelenlegi){
+                    g2d.setColor(new Color(255, 255, 255, 120));
+                    int glowSize = 40;
+                    g2d.fillOval(cs.getX() - glowSize/2, cs.getY() - glowSize/2, glowSize, glowSize);
+
+                }
+            }
+
             nodeRenderer.drawNode(g2d, cs);
         }
 

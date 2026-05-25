@@ -62,11 +62,12 @@ public class VehicleRenderer {
         }
 
         String tipus = jarmu.getJarmuTipus();
-        Image imgToDraw = null;
-
-        if (tipus.equals("Auto")) imgToDraw = autoImg;
-        else if (tipus.equals("Busz")) imgToDraw = buszImg;
-        else if (tipus.equals("Hokotro")) imgToDraw = hokotroImg;
+        Image imgToDraw = switch (tipus) {
+            case "Auto" -> autoImg;
+            case "Busz" -> buszImg;
+            case "Hokotro" -> hokotroImg;
+            default -> null;
+        };
 
         if (imgToDraw != null) {
             g2d.drawImage(imgToDraw, x - (size/2), y - (size/2), size, size, null);

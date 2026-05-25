@@ -1,7 +1,6 @@
 package Models;
 
 import Controllers.GameController;
-import Models.Palya;
 import Views.GameWindow;
 import javax.swing.SwingUtilities;
 
