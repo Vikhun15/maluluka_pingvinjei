@@ -230,4 +230,12 @@ public abstract class Jarmu implements IObservable {
         this.jarmuTipus = jarmuTipus;
     }
 
+    public Csomopont getCelCsomopont() {
+        return celCsomopont;
+    }
+
+    public void setCelCsomopont(Csomopont celCsomopont) {
+        this.celCsomopont = celCsomopont;
+    }
+
 }

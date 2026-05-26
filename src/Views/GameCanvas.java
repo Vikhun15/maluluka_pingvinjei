@@ -14,6 +14,7 @@ public class GameCanvas extends JPanel implements IObserver {
     private final VehicleRenderer vehicleRenderer;
 
     private Hokotro selectedHokotro;
+    private Busz selectedBusz;
 
     private Csomopont hoveredCsomopont = null;
 
@@ -36,9 +37,6 @@ public class GameCanvas extends JPanel implements IObserver {
         });
     }
 
-    /**
-     * Megnézi, hogy az egér egy csomópont felett van-e, és ha változás van, újrarajzolja a vásznat.
-     */
     private void checkHover(int mouseX, int mouseY) {
         Csomopont newHover = null;
         int hitbox = 20;
@@ -56,9 +54,6 @@ public class GameCanvas extends JPanel implements IObserver {
         }
     }
 
-    /**
-     * Ellenőrzi, hogy a cél csomópont elérhető-e a jelenlegiből (van-e közvetlen út).
-     */
     private boolean isReachable(Csomopont start, Csomopont target) {
         if (start == null || target == null || start == target) return false;
 
@@ -73,6 +68,11 @@ public class GameCanvas extends JPanel implements IObserver {
 
     public void setSelectedHokotro(Hokotro hk) {
         this.selectedHokotro = hk;
+        this.repaint();
+    }
+
+    public void setSelectedBusz(Busz busz) {
+        this.selectedBusz = busz;
         this.repaint();
     }
 
@@ -95,29 +95,47 @@ public class GameCanvas extends JPanel implements IObserver {
             roadRenderer.drawEdge(g2d, ut);
         }
 
+        Jarmu aktivJarmu = null;
+        if (selectedHokotro != null) aktivJarmu = selectedHokotro;
+        else if (selectedBusz != null) aktivJarmu = selectedBusz;
+
         for (Csomopont cs : palya.getCsomopontok()) {
-            if(selectedHokotro != null){
 
-                Csomopont jelenlegi = selectedHokotro.getAktualisCsomopont();
-                if (cs == hoveredCsomopont) {
-                    if (jelenlegi != cs) {
+            if (aktivJarmu != null) {
+                Csomopont jelenlegi = aktivJarmu.getAktualisCsomopont();
+                Sav aktualisSav = aktivJarmu.getAktualisSav();
+                Csomopont cel = aktivJarmu.getCelCsomopont();
+
+                if (jelenlegi != null) {
+                    if (cs == hoveredCsomopont && cs != jelenlegi) {
                         boolean elerheto = isReachable(jelenlegi, cs);
-
-                        if (elerheto) {
-                            g2d.setColor(new Color(76, 175, 80, 180));
-                        } else {
-                            g2d.setColor(new Color(244, 67, 54, 180));
-                        }
-
+                        g2d.setColor(elerheto ? new Color(76, 175, 80, 180) : new Color(244, 67, 54, 180));
+                        int glowSize = 40;
+                        g2d.fillOval(cs.getX() - glowSize/2, cs.getY() - glowSize/2, glowSize, glowSize);
+                    } else if (cs == jelenlegi) {
+                        g2d.setColor(new Color(255, 255, 255, 120));
                         int glowSize = 40;
                         g2d.fillOval(cs.getX() - glowSize/2, cs.getY() - glowSize/2, glowSize, glowSize);
                     }
-                }
-                else if(cs == jelenlegi){
-                    g2d.setColor(new Color(255, 255, 255, 120));
-                    int glowSize = 40;
-                    g2d.fillOval(cs.getX() - glowSize/2, cs.getY() - glowSize/2, glowSize, glowSize);
-
+                } else if (aktualisSav != null) {
+                    Utszakasz ut = aktualisSav.getUtszakasz();
+                    boolean isEndpoint = (cs == ut.getKezdoPont() || cs == ut.getVegPont());
+                    if(cs == hoveredCsomopont){
+                        if (cs == cel) {
+                            g2d.setColor(new Color(255, 255, 255, 120));
+                            int glowSize = 40;
+                            g2d.fillOval(cs.getX() - glowSize/2, cs.getY() - glowSize/2, glowSize, glowSize);
+                        } else if (isEndpoint && cel == null) {
+                            int alpha = 180;
+                            g2d.setColor(new Color(76, 175, 80, alpha));
+                            int glowSize = 40;
+                            g2d.fillOval(cs.getX() - glowSize/2, cs.getY() - glowSize/2, glowSize, glowSize);
+                        } else if (!isEndpoint) {
+                            g2d.setColor(new Color(244, 67, 54, 180));
+                            int glowSize = 40;
+                            g2d.fillOval(cs.getX() - glowSize/2, cs.getY() - glowSize/2, glowSize, glowSize);
+                        }
+                    }
                 }
             }
 
@@ -125,7 +143,7 @@ public class GameCanvas extends JPanel implements IObserver {
         }
 
         for (Jarmu jarmu : palya.getJarmuvek()) {
-            vehicleRenderer.draw(g2d, jarmu, jarmu == selectedHokotro);
+            vehicleRenderer.draw(g2d, jarmu, jarmu == selectedHokotro || jarmu == selectedBusz);
         }
 
         drawDirectionHints(g2d);
@@ -137,28 +155,62 @@ public class GameCanvas extends JPanel implements IObserver {
         for (int i = 0; i < getWidth(); i += gridSize) g2d.drawLine(i, 0, i, getHeight());
         for (int i = 0; i < getHeight(); i += gridSize) g2d.drawLine(0, i, getWidth(), i);
     }
-
-    /**
-     * Vizuálisan megjelöli a lehetséges haladási irányokat (W, A, S, D)
-     * az éppen kiválasztott hókotró pozíciója körül.
-     */
     private void drawDirectionHints(Graphics2D g2d) {
-        if (selectedHokotro == null) return;
+        Jarmu aktivJarmu = null;
+        if (selectedHokotro != null) aktivJarmu = selectedHokotro;
+        else if (selectedBusz != null) aktivJarmu = selectedBusz;
 
-        Csomopont akt = selectedHokotro.getAktualisCsomopont();
-        if (akt == null) return;
+        if (aktivJarmu == null) return;
 
-        int x1 = akt.getX();
-        int y1 = akt.getY();
+        Csomopont akt1 = aktivJarmu.getAktualisCsomopont();
+        Sav aktualisSav = aktivJarmu.getAktualisSav();
+        Utszakasz akt2 = (aktualisSav != null) ? aktualisSav.getUtszakasz() : null;
 
-        g2d.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        if (akt1 != null) {
+            int x1 = akt1.getX();
+            int y1 = akt1.getY();
 
-        for (Utszakasz u : palya.getUtszakaszok()) {
-            Csomopont cel = null;
-            if (u.getKezdoPont() == akt) cel = u.getVegPont();
-            else if (u.getVegPont() == akt) cel = u.getKezdoPont();
+            g2d.setFont(new Font("Segoe UI", Font.BOLD, 12));
 
-            if (cel != null) {
+            for (Utszakasz u : palya.getUtszakaszok()) {
+                Csomopont cel = null;
+                if (u.getKezdoPont() == akt1) cel = u.getVegPont();
+                else if (u.getVegPont() == akt1) cel = u.getKezdoPont();
+
+                if (cel != null) {
+                    int dx = cel.getX() - x1;
+                    int dy = cel.getY() - y1;
+
+                    String key = "";
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        key = dx > 0 ? "D" : "A";
+                    } else {
+                        key = dy > 0 ? "S" : "W";
+                    }
+
+                    double dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist == 0) continue;
+                    int hintX = (int) (x1 + (dx / dist) * 35);
+                    int hintY = (int) (y1 + (dy / dist) * 35);
+
+                    g2d.setColor(Color.decode("#2C3E50"));
+                    g2d.fillOval(hintX - 10, hintY - 10, 20, 20);
+
+                    g2d.setColor(Color.WHITE);
+
+                    int textOffset = key.equals("W") ? -6 : -4;
+                    g2d.drawString(key, hintX + textOffset, hintY + 4);
+                }
+            }
+        } else if (akt2 != null && aktivJarmu.getCelCsomopont() == null) {
+            int x1 = (akt2.getKezdoPont().getX() + akt2.getVegPont().getX()) / 2;
+            int y1 = (akt2.getKezdoPont().getY() + akt2.getVegPont().getY()) / 2;
+
+            g2d.setFont(new Font("Segoe UI", Font.BOLD, 12));
+
+            Csomopont[] lehetesegesCelok = {akt2.getKezdoPont(), akt2.getVegPont()};
+
+            for (Csomopont cel : lehetesegesCelok) {
                 int dx = cel.getX() - x1;
                 int dy = cel.getY() - y1;
 

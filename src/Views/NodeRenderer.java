@@ -30,7 +30,8 @@ public class NodeRenderer {
         g2d.setColor(Color.WHITE);
         g2d.drawOval(x - size/2, y - size/2, size, size);
 
-        g2d.setColor(Color.WHITE);
+
+        g2d.setColor(Color.BLACK);
         g2d.drawString(label, x + size/2 + 2, y + 5);
     }
 }

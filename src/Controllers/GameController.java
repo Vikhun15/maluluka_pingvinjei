@@ -11,6 +11,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameController implements KeyListener, MouseListener {
 
@@ -21,11 +23,19 @@ public class GameController implements KeyListener, MouseListener {
     private final TestManager testManager = new TestManager();
 
     private Hokotro kivalasztottHokotro;
+    private Busz kivalasztottBusz;
     private int aktivJatekosIndex = 0;
     private int jelenlegiKor = 1;
 
+    private final List<Jarmu> jatekosJarmuvek = new ArrayList<>();
+
     public GameController(Palya palya) {
         this.palya = palya;
+        for (Jarmu j : palya.getJarmuvek()) {
+            if (j.getJarmuTipus().equals("Hokotro") || j.getJarmuTipus().equals("Busz")) {
+                jatekosJarmuvek.add(j);
+            }
+        }
     }
 
     public void setWindow(GameWindow window) {
@@ -43,15 +53,31 @@ public class GameController implements KeyListener, MouseListener {
         }
     }
 
-    public void passzoldABotot() {
-        aktivJatekosIndex++;
-        int jatekosokSzama = 1;
-
-        if (aktivJatekosIndex >= jatekosokSzama) {
-            aktivJatekosIndex = 0;
-            jelenlegiKor++;
-            executeEnvironmentStep();
+    public void setKivalasztottBusz(Busz busz) {
+        this.kivalasztottBusz = busz;
+        if (window != null && window.getCanvas() != null) {
+            window.getCanvas().setSelectedBusz(busz);
         }
+    }
+
+    public void passzoldABotot() {
+        if (jatekosJarmuvek.isEmpty()) return;
+
+        aktivJatekosIndex++;
+
+        if (aktivJatekosIndex >= jatekosJarmuvek.size()) {
+            aktivJatekosIndex = 0;
+
+            executeEnvironmentStep();
+            mozgasdAzAutokat();
+            jelenlegiKor++;
+
+            if (window != null) {
+                window.getStatusBar().setStatus(jelenlegiKor, "A kör lezajlott, mindenki lépett.");
+            }
+        }
+
+        frissitAktivJatekost();
     }
 
     private void executeEnvironmentStep() {
@@ -60,6 +86,7 @@ public class GameController implements KeyListener, MouseListener {
         }
         for (Jarmu j : palya.getJarmuvek()) {
             j.korFrissites();
+            j.megerkezik();
         }
 
         if (window != null) {
@@ -68,20 +95,19 @@ public class GameController implements KeyListener, MouseListener {
     }
 
     public void handleStep() {
-        if (kivalasztottHokotro != null) {
-            if (kivalasztottHokotro.getKimaradoKorok() > 0) {
-                kivalasztottHokotro.korFrissites();
-            } else if (kivalasztottHokotro.getAktualisCsomopont() == null) {
-                kivalasztottHokotro.megerkezik();
+        if (jatekosJarmuvek.isEmpty()) return;
+        Jarmu aktiv = jatekosJarmuvek.get(aktivJatekosIndex);
+
+        if (aktiv.getKimaradoKorok() > 0) {
+            aktiv.korFrissites();
+        } else if (aktiv.getAktualisCsomopont() == null) {
+            if (aktiv.getCelCsomopont() == null) {
+                if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Előbb válassz irányt (WASD / Kattintás)!");
+                return;
             }
         }
 
-        mozgasdAzAutokat();
-        jelenlegiKor++;
-        if (window != null) {
-            window.getCanvas().update();
-            window.getStatusBar().setStatus(jelenlegiKor, "A kör lezajlott.");
-        }
+        passzoldABotot();
     }
 
     public void mozgasdAzAutokat() {
@@ -179,24 +205,33 @@ public class GameController implements KeyListener, MouseListener {
                 window.getStatusBar().setStatus(jelenlegiKor, "Kattintva: " + clickedNode.getId());
             }
 
-            if (kivalasztottHokotro != null) {
-                Csomopont jelenlegi = kivalasztottHokotro.getAktualisCsomopont();
+            if (kivalasztottHokotro != null || kivalasztottBusz != null) {
+                Jarmu aktivJarmu = kivalasztottHokotro != null ? kivalasztottHokotro : kivalasztottBusz;
+                Csomopont jelenlegi = aktivJarmu.getAktualisCsomopont();
+                Sav aktualisSav = aktivJarmu.getAktualisSav();
 
                 if (jelenlegi != null && jelenlegi != clickedNode) {
-
                     Sav celSav = findSavBetween(jelenlegi, clickedNode);
-
                     if (celSav != null) {
-                        kivalasztottHokotro.elindul(celSav, clickedNode);
-                        passzoldABotot();
-                    } else {
+                        aktivJarmu.elindul(celSav, clickedNode);
                         if (window != null) {
-                            window.getStatusBar().setStatus(jelenlegiKor, "Nem lehet oda lépni, nincs közvetlen út!");
+                            window.getCanvas().update();
+                            window.getStatusBar().setStatus(jelenlegiKor, "Irány kiválasztva! Nyomj Space-t a megérkezéshez és kör leadásához.");
                         }
+                    } else {
+                        if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Nem lehet oda lépni, nincs közvetlen út!");
                     }
-                } else if (jelenlegi == null) {
-                    if (window != null) {
-                        window.getStatusBar().setStatus(jelenlegiKor, "A jármű úton van! Lépj a Space gombbal a megérkezéshez.");
+                } else if (jelenlegi == null && aktualisSav != null) {
+                    if (aktivJarmu.getCelCsomopont() == null) {
+                        Utszakasz ut = aktualisSav.getUtszakasz();
+                        if (clickedNode == ut.getKezdoPont() || clickedNode == ut.getVegPont()) {
+                            aktivJarmu.setCelCsomopont(clickedNode);
+                            if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Irány rögzítve! Nyomj Space-t a befejezéshez.");
+                        } else {
+                            if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Kérlek, az utca egyik végpontjára kattints!");
+                        }
+                    } else {
+                        if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Az irány rögzítve van. Nyomj Space-t a megérkezéshez!");
                     }
                 }
             }
@@ -216,9 +251,9 @@ public class GameController implements KeyListener, MouseListener {
         for (Jarmu j : palya.getJarmuvek()) {
             j.addObserver(canvas);
         }
-        for(Csomopont cs : palya.getCsomopontok()){
-            if(cs.getEpulet() != null){
-                if(cs.getEpulet().asBolt() != null){
+        for (Csomopont cs : palya.getCsomopontok()) {
+            if (cs.getEpulet() != null) {
+                if (cs.getEpulet().asBolt() != null) {
                     cs.getEpulet().asBolt().addObserver(canvas);
                 }
             }
@@ -262,13 +297,13 @@ public class GameController implements KeyListener, MouseListener {
         }
     }
 
-    public void handleFejChange(Hokotro hk){
+    public void handleFejChange(Hokotro hk) {
         if (window == null) return;
         FejekDialog fejekDialog = new FejekDialog(window, this);
         fejekDialog.showFejek(hk);
     }
 
-    public void handleFejCsere(Kotrofej fej, Hokotro hk){
+    public void handleFejCsere(Kotrofej fej, Hokotro hk) {
         hk.setAktualisFej(fej);
         hk.notifyObservers();
     }
@@ -296,21 +331,44 @@ public class GameController implements KeyListener, MouseListener {
             }
         }
 
-        Hokotro elsoHokotro = palya.getJarmuvek().stream()
-                .filter(j -> j.getJarmuTipus().equals("Hokotro"))
-                .map(j -> (Hokotro) j)
-                .findFirst()
-                .orElse(null);
-
-        if (elsoHokotro != null) {
-            setKivalasztottHoktoro(elsoHokotro);
-
-            if (window != null) {
-                window.getControlPanel().setHokotro(elsoHokotro);
+        jatekosJarmuvek.clear();
+        for (Jarmu j : palya.getJarmuvek()) {
+            if (j.getJarmuTipus().equals("Hokotro") || j.getJarmuTipus().equals("Busz")) {
+                jatekosJarmuvek.add(j);
             }
-            elsoHokotro.notifyObservers();
         }
 
+        for (Jarmu j : jatekosJarmuvek) {
+            if (j.getAktualisCsomopont() == null) {
+                j.setCelCsomopont(null);
+            }
+        }
+
+        aktivJatekosIndex = 0;
+        frissitAktivJatekost();
+
+    }
+
+    private void frissitAktivJatekost() {
+        if (jatekosJarmuvek.isEmpty()) return;
+
+        Jarmu aktiv = jatekosJarmuvek.get(aktivJatekosIndex);
+
+        if (aktiv.getJarmuTipus().equals("Hokotro")) {
+            setKivalasztottBusz(null);
+            setKivalasztottHoktoro((Hokotro) aktiv);
+            if (window != null) window.getControlPanel().setHokotro((Hokotro) aktiv);
+
+        } else if (aktiv.getJarmuTipus().equals("Busz")) {
+            setKivalasztottHoktoro(null);
+            setKivalasztottBusz((Busz) aktiv);
+            if (window != null) window.getControlPanel().setBusz((Busz) aktiv);
+        }
+
+        if (window != null) {
+            window.getStatusBar().setStatus(jelenlegiKor, "Játékos váltás: " + aktiv.getJarmuTipus() + " következik.");
+            window.getCanvas().update();
+        }
     }
 
     /**
@@ -366,8 +424,16 @@ public class GameController implements KeyListener, MouseListener {
             return;
         }
 
+        Jarmu aktivJarmu = null;
         if (kivalasztottHokotro != null) {
-            Csomopont jelenlegi = kivalasztottHokotro.getAktualisCsomopont();
+            aktivJarmu = kivalasztottHokotro;
+        } else if (kivalasztottBusz != null) {
+            aktivJarmu = kivalasztottBusz;
+        }
+
+        if (aktivJarmu != null) {
+            Csomopont jelenlegi = aktivJarmu.getAktualisCsomopont();
+            Sav aktualisSav = aktivJarmu.getAktualisSav();
 
             if (jelenlegi != null) {
                 String irany = "";
@@ -382,17 +448,43 @@ public class GameController implements KeyListener, MouseListener {
                         Utszakasz ut = celSav.getUtszakasz();
                         Csomopont celPont = (ut.getKezdoPont() == jelenlegi) ? ut.getVegPont() : ut.getKezdoPont();
 
-                        kivalasztottHokotro.elindul(celSav, celPont);
-                        passzoldABotot();
+                        aktivJarmu.elindul(celSav, celPont);
 
+                        if (window != null) {
+                            window.getCanvas().update();
+                            window.getStatusBar().setStatus(jelenlegiKor, "Irány kiválasztva! Nyomj Space-t a megérkezéshez és kör leadásához.");
+                        }
                     } else {
                         if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Erre nincs út!");
                     }
                 }
-            } else {
-                if (window != null) {
-                    window.getStatusBar().setStatus(jelenlegiKor, "A jármű úton van! Nyomj Space-t a megérkezéshez.");
+            } else if (aktualisSav != null && aktivJarmu.getCelCsomopont() == null) {
+                String irany = "";
+                if (key == KeyEvent.VK_W || key == KeyEvent.VK_UP) irany = "fel";
+                else if (key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) irany = "le";
+                else if (key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) irany = "bal";
+                else if (key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) irany = "jobb";
+
+                if (!irany.isEmpty()) {
+                    Utszakasz ut = aktualisSav.getUtszakasz();
+
+                    Csomopont fakeKozep = new Csomopont();
+                    fakeKozep.setX((ut.getKezdoPont().getX() + ut.getVegPont().getX()) / 2);
+                    fakeKozep.setY((ut.getKezdoPont().getY() + ut.getVegPont().getY()) / 2);
+
+                    Csomopont valasztottCel = null;
+                    if (isJoIrany(fakeKozep, irany, ut.getKezdoPont())) valasztottCel = ut.getKezdoPont();
+                    else if (isJoIrany(fakeKozep, irany, ut.getVegPont())) valasztottCel = ut.getVegPont();
+
+                    if (valasztottCel != null) {
+                        aktivJarmu.setCelCsomopont(valasztottCel);
+                        if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Irány rögzítve! Nyomj Space-t a megérkezéshez.");
+                    } else {
+                        if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Abba az irányba nincs végpontja az útnak!");
+                    }
                 }
+            } else {
+                if (window != null) window.getStatusBar().setStatus(jelenlegiKor, "Úton vagy! Nyomj Space-t a megérkezéshez.");
             }
         }
     }
@@ -499,12 +591,14 @@ public class GameController implements KeyListener, MouseListener {
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {}
+    public void keyReleased(KeyEvent e) {
+    }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
-    public void toggleRandomness(boolean selected) {
+    public void handleRandomToggle(boolean selected) {
         testManager.setRandomnessEnabled(selected);
         if (window != null) {
             String status = selected ? "Véletlenszerű események engedélyezve." : "Véletlenszerű események letiltva.";

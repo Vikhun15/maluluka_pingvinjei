@@ -107,6 +107,7 @@ public class GameWindow extends JFrame {
         });
 
         JCheckBoxMenuItem randomItem = new JCheckBoxMenuItem("Véletlenszerűség BE/KI (R)");
+        randomItem.addActionListener(e -> controller.handleRandomToggle(randomItem.isSelected()));
 
         simMenu.add(step1Item);
         simMenu.add(step5Item);
